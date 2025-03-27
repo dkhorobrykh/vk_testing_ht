@@ -11,6 +11,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      LANG: ru_RU.UTF-8
+      LANGUAGE: ru
+      LC_ALL: ru_RU.UTF-8
 
     steps:
       - name: Checkout repository
