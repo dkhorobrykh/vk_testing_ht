@@ -12,12 +12,8 @@ public class BaseUITest {
     // for github actions
     @BeforeAll
     public static void setUp() {
-        String userDataDir = System.getenv("CHROME_USER_DATA_DIR");
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--user-data-dir=" + userDataDir);
-
-        Configuration.browserCapabilities = options;
+        Configuration.headless = true;
+        Configuration.browser = "chrome";
     }
 
     @AfterEach
