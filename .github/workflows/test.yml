@@ -46,3 +46,10 @@ jobs:
           SECOND_USER_PASSWORD: ${{ secrets.SECOND_USER_PASSWORD }}
           SECOND_USER_ID: ${{ secrets.SECOND_USER_ID }}
           SECOND_USER_NAME: ${{ secrets.SECOND_USER_NAME }}
+
+      - name: Upload test artifacts
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: selenide-screenshots
+          path: build/reports/tests/
