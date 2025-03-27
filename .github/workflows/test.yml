@@ -23,18 +23,15 @@ jobs:
           java-version: '23'
           cache: maven
 
-      - name: Install dependencies
-        run: |
-            sudo apt-get update
-            sudo apt-get install -y xvfb google-chrome-stable
+      - uses: browser-actions/setup-chrome@latest
+      - run: chrome --version
 
-      - name: Start virtual display
-        run: Xvfb :99 -ac &
+      - name: Set unique Chrome user data dir
+        run: echo "CHROME_USER_DATA_DIR=/tmp/chrome-profile-${GITHUB_RUN_ID}" >> $GITHUB_ENV
 
       - name: Run tests with Maven
         run: mvn test
         env:
-          DISPLAY: :99
           FIRST_USER_LOGIN: ${{ secrets.FIRST_USER_LOGIN }}
           FIRST_USER_PASSWORD: ${{ secrets.FIRST_USER_PASSWORD }}
           FIRST_USER_NAME: ${{ secrets.FIRST_USER_NAME }}
@@ -42,3 +39,4 @@ jobs:
           SECOND_USER_PASSWORD: ${{ secrets.SECOND_USER_PASSWORD }}
           SECOND_USER_ID: ${{ secrets.SECOND_USER_ID }}
           SECOND_USER_NAME: ${{ secrets.SECOND_USER_NAME }}
+          CHROME_USER_DATA_DIR: ${{ env.CHROME_USER_DATA_DIR }}
