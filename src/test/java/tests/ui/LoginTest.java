@@ -1,42 +1,39 @@
 package tests.ui;
 
-import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import pages.LoginPage;
 
 public class LoginTest extends BaseUITest {
 
-    private static final LoginPage loginPage = new LoginPage();
-
-    private static final String secondUserLogin = System.getenv("SECOND_USER_LOGIN");
-    private static final String secondUserPassword = System.getenv("SECOND_USER_PASSWORD");
-    private static final String secondUserName = System.getenv("SECOND_USER_NAME");
-
     private static final String wrongUserLogin = "wrong";
     private static final String wrongUserPassword = "wrong";
 
     @Test
-    public void login_withValidCredentials_shouldRedirectToProfilePage() {
+    public void loginWithValidCredentialsShouldRedirectToProfilePage() {
+        var loginPage = new LoginPage();
+
         var profilePage = loginPage
             .open()
-            .enterLogin(secondUserLogin)
-            .enterPassword(secondUserPassword)
+            .enterLogin(SECOND_USER_LOGIN)
+            .enterPassword(SECOND_USER_PASSWORD)
             .login();
 
-        assertEquals(secondUserName, profilePage.getUserName());
+        assertEquals(SECOND_USER_NAME, profilePage.getUserName(), "Неверное имя пользователя на главной странице");
     }
 
     @Test
-    public void login_withInvalidCredentials_shouldShowException() {
+    public void loginWithInvalidCredentialsShouldShowException() {
+        var loginPage = new LoginPage();
+
         loginPage
             .open()
             .enterLogin(wrongUserLogin)
             .enterPassword(wrongUserPassword)
             .login();
 
-        assertEquals(LoginPage.WRONG_LOGIN_EXCEPTION_TEXT, loginPage.getWrongLoginExceptionText());
+        assertEquals(LoginPage.WRONG_LOGIN_EXCEPTION_TEXT, loginPage.getWrongLoginExceptionText(), "Неверный текст " +
+            "ошибки при вводе некорректных данных для входа");
     }
 }

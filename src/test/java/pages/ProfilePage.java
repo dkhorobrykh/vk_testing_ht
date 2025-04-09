@@ -9,49 +9,58 @@ import static com.codeborne.selenide.Selenide.page;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 
+/**
+ * Страница профиля пользователя (<a href="https://ok.ru/profile/">перейти</a>)
+ * Позволяет получить основную информацию о пользователе, перейти в другие разделы
+ * */
 public class ProfilePage {
 
     private final static String PROFILE_URL = "https://ok.ru/profile/";
 
-    private SelenideElement userName = $(By.xpath("//*[@id=\"hook_Block_Navigation\"]/div/div/div[1]/a/div"));
-    private SelenideElement profileButton = $(By.xpath("//*[@id=\"hook_Block_ToolbarUserDropdown\"]/div/button"));
-    private SelenideElement signOutButton = $(By.xpath("//*[@id=\"user-dropdown-menu\"]/div[1]/div/div[1]/div[2]"));
-    private SelenideElement finalSignOutButton = $(By.xpath("//input[@value='Выйти']"));
-    private SelenideElement guestButton = $(By.xpath("//*[@id=\"hook_Block_HeaderTopNewEventsInToolbar\"]/a"));
-    private SelenideElement messagesButton = $(By.xpath("//*[@id=\"msg_toolbar_button\"]"));
+    private final SelenideElement userName = $(By.xpath("//*[@id=\"hook_Block_Navigation\"]/div/div/div[1]/a/div"));
+    private final SelenideElement guestButton = $(By.xpath("//*[@id=\"hook_Block_HeaderTopNewEventsInToolbar\"]/a"));
+    private final SelenideElement messagesButton = $(By.xpath("//*[@id=\"msg_toolbar_button\"]"));
 
+    /**
+     * Вернуть имя текущего пользователя
+     * */
     public String getUserName() {
         return userName.getText();
     }
 
+    /**
+     * Перейти на страницу конкретного пользователя по его ID
+     *
+     * @param profileId ID профиля для перехода
+     * */
     public ProfilePage goToProfilePage(String profileId) {
         open(PROFILE_URL + profileId);
         return this;
     }
 
+    /**
+     * Выйти из аккаунта
+     * TODO: обычный выход через UI не работает, пока оставлено через closeWebDriver()
+     * */
     public LoginPage signOut() {
-//        profileButton.click();
-//        signOutButton.shouldBe(visible);
-//        signOutButton.click();
-//        finalSignOutButton.shouldBe(visible);
-//        finalSignOutButton.click();
-
-        // почему-то не срабатывает последний клик по кнопке, придется оставить небольшой костыль
         closeWebDriver();
-        new LoginPage().open();
-        return page(LoginPage.class);
+        return new LoginPage().open();
     }
 
+    /**
+     * Перейти на страницу со списком гостей
+     * */
     public GuestPage goToGuestPage() {
-        guestButton.shouldBe(visible);
-        guestButton.click();
-        return page(GuestPage.class);
+        guestButton.shouldBe(visible.because("Кнопка списка гостей отсутствует")).click();
+        return new GuestPage();
     }
 
+    /**
+     * Перейти на страницу сообщений
+     * */
     public MessagesPage goToMessagesPage() {
-        messagesButton.shouldBe(visible);
-        messagesButton.click();
-        return page(MessagesPage.class);
+        messagesButton.shouldBe(visible.because("Кнопка сообщений отсутствует")).click();
+        return new MessagesPage();
     }
 
 }

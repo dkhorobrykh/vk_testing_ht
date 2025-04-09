@@ -8,7 +8,7 @@ public class MainTest {
 
     @Test
     public void testMain() {
-        assertTrue(true);
+        assertTrue(true, "true != true... (☉_☉)");
     }
 
 }
