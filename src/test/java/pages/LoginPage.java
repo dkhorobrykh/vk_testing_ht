@@ -13,7 +13,7 @@ import org.openqa.selenium.By;
  */
 public class LoginPage {
 
-    private static final String LOGIN_URL = "https://ok.ru/";
+    public static final String LOGIN_URL = "https://ok.ru/";
 
     private final SelenideElement loginInput = $(By.xpath("//*[@id='field_email']"));
     private final SelenideElement passwordInput = $(By.xpath("//*[@id='field_password']"));

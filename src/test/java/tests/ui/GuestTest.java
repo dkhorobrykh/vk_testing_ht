@@ -3,17 +3,22 @@ package tests.ui;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.LoginPage;
+import tests.TestType;
 
 @Slf4j
 public class GuestTest extends BaseUITest {
 
     @Test
+    @Tag(TestType.SLOW)
+    @DisplayName("Перейти на страницу другого пользователя, проверить отображение в списке гостей")
     public void guestShouldBeDisplayedInTheGuestList() {
         var loginPage = new LoginPage();
 
-        log.info("Авторизируемся с пользователем #1");
+        log.info("Авторизуемся с пользователем #1");
         var profilePage1 = loginPage
             .open()
             .enterLogin(FIRST_USER_LOGIN)
@@ -27,7 +32,7 @@ public class GuestTest extends BaseUITest {
         log.info("Выходим из профиля пользователя #1");
         loginPage = profilePage1.signOut();
 
-        log.info("Авторизируемся с пользователем #2");
+        log.info("Авторизуемся с пользователем #2");
         profilePage2 = loginPage
             .enterLogin(SECOND_USER_LOGIN)
             .enterPassword(SECOND_USER_PASSWORD)

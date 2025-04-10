@@ -1,8 +1,10 @@
 package tests.ui;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.WebDriverRunner;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,8 +31,16 @@ public class BaseUITest {
      * */
     @BeforeAll
     public static void setUp() {
-        Configuration.headless = true;
+//        Configuration.headless = true;
         Configuration.browser = "chrome";
+    }
+
+    public String getCurrentUrl() {
+        return WebDriverRunner.getWebDriver().getCurrentUrl();
+    }
+
+    public void assertCurrentUrlEquals(String expectedUrl) {
+        assertEquals(expectedUrl, getCurrentUrl(), "URL текущей страницы не совпадает с ожидаемым");
     }
 
     /**

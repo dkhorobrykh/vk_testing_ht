@@ -15,11 +15,13 @@ import org.openqa.selenium.By;
  * */
 public class ProfilePage {
 
-    private final static String PROFILE_URL = "https://ok.ru/profile/";
+    public final static String PROFILE_URL = "https://ok.ru/profile/";
 
     private final SelenideElement userName = $(By.xpath("//a[contains(@data-l, 'userPage')]"));
     private final SelenideElement guestButton = $(By.xpath("//li[contains(@data-l, 'guests')]//a"));
     private final SelenideElement messagesButton = $(By.xpath("//li[contains(@data-l, 'messages')]//button"));
+    private final SelenideElement rightMenuButton = $(By.xpath("//button[contains(@class, 'ucard-mini')]"));
+    private final SelenideElement exitButton = $(By.xpath("//a[contains(@data-l, 'logout')]"));
 
     /**
      * Вернуть имя текущего пользователя
@@ -43,6 +45,8 @@ public class ProfilePage {
      * TODO: обычный выход через UI не работает, пока оставлено через closeWebDriver()
      * */
     public LoginPage signOut() {
+//        rightMenuButton.shouldBe(visible.because("Правое верхнее меню отсутствует")).click();
+//        exitButton.shouldBe(visible.because("Кнопка выхода отсутствует")).click();
         closeWebDriver();
         return new LoginPage().open();
     }
