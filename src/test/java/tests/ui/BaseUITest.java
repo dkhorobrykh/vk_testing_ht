@@ -3,12 +3,15 @@ package tests.ui;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 import com.codeborne.selenide.Configuration;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Timeout;
 
 /**
  * Базовый класс UI тестов
  * */
+@Timeout(value = 30, unit = TimeUnit.SECONDS)
 public class BaseUITest {
 
     protected final static String FIRST_USER_LOGIN = "79617542986";
