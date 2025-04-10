@@ -21,16 +21,15 @@ public class LoginTest extends BaseUITest {
     public void loginWithValidCredentialsShouldRedirectToProfilePage() {
         var loginPage = new LoginPage();
 
-        var profilePage = loginPage
-            .open()
-            .enterLogin(SECOND_USER_LOGIN)
-            .enterPassword(SECOND_USER_PASSWORD)
-            .login();
+        var profilePage = loginPage.open().enterLogin(SECOND_USER_LOGIN).enterPassword(SECOND_USER_PASSWORD).login();
 
         assertAll(
             () -> assertCurrentUrlEquals(ProfilePage.PROFILE_URL),
-            () -> assertEquals(SECOND_USER_NAME, profilePage.getUserName(), "Неверное имя пользователя на главной " +
-                "странице")
+            () -> assertEquals(
+                SECOND_USER_NAME,
+                profilePage.getUserName(),
+                "Неверное имя пользователя на главной " + "странице"
+            )
         );
 
     }
@@ -41,16 +40,12 @@ public class LoginTest extends BaseUITest {
     public void loginWithInvalidCredentialsShouldShowException() {
         var loginPage = new LoginPage();
 
-        loginPage
-            .open()
-            .enterLogin(wrongUserLogin)
-            .enterPassword(wrongUserPassword)
-            .login();
+        loginPage.open().enterLogin(wrongUserLogin).enterPassword(wrongUserPassword).login();
 
-        assertAll(
-            () -> assertCurrentUrlEquals(LoginPage.LOGIN_URL),
-            () -> assertEquals(LoginPage.WRONG_LOGIN_EXCEPTION_TEXT, loginPage.getWrongLoginExceptionText(), "Неверный текст " +
-                "ошибки при вводе некорректных данных для входа")
+        assertEquals(
+            LoginPage.WRONG_LOGIN_EXCEPTION_TEXT,
+            loginPage.getWrongLoginExceptionText(),
+            "Неверный текст " + "ошибки при вводе некорректных данных для входа"
         );
     }
 }

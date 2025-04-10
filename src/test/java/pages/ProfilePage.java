@@ -15,7 +15,7 @@ import org.openqa.selenium.By;
  * */
 public class ProfilePage {
 
-    public final static String PROFILE_URL = "https://ok.ru/profile/";
+    public final static String PROFILE_URL = "https://ok.ru/";
 
     private final SelenideElement userName = $(By.xpath("//a[contains(@data-l, 'userPage')]"));
     private final SelenideElement guestButton = $(By.xpath("//li[contains(@data-l, 'guests')]//a"));
@@ -36,7 +36,7 @@ public class ProfilePage {
      * @param profileId ID профиля для перехода
      * */
     public ProfilePage goToProfilePage(String profileId) {
-        open(PROFILE_URL + profileId);
+        open(PROFILE_URL + "profile/" + profileId);
         return this;
     }
 
