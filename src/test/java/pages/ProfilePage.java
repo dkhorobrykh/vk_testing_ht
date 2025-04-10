@@ -17,9 +17,9 @@ public class ProfilePage {
 
     private final static String PROFILE_URL = "https://ok.ru/profile/";
 
-    private final SelenideElement userName = $(By.xpath("//*[@id=\"hook_Block_Navigation\"]/div/div/div[1]/a/div"));
-    private final SelenideElement guestButton = $(By.xpath("//*[@id=\"hook_Block_HeaderTopNewEventsInToolbar\"]/a"));
-    private final SelenideElement messagesButton = $(By.xpath("//*[@id=\"msg_toolbar_button\"]"));
+    private final SelenideElement userName = $(By.xpath("//a[contains(@data-l, 'userPage')]"));
+    private final SelenideElement guestButton = $(By.xpath("//li[contains(@data-l, 'guests')]//a"));
+    private final SelenideElement messagesButton = $(By.xpath("//li[contains(@data-l, 'messages')]//button"));
 
     /**
      * Вернуть имя текущего пользователя
