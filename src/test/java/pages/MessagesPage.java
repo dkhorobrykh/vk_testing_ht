@@ -15,7 +15,7 @@ public class MessagesPage {
     public static final String MESSAGES_URL = "https://ok.ru/messages";
 
     private final SelenideElement firstMessage = $(By.xpath("//*[@id=\"msg_layer\"]/msg-app/div/msg-page/div[1]/msg" +
-        "-chats-panel/div/msg-chats-list/msg-chats-list-item[1]"));
+        "-chats-panel/div/msg-chats-list/msg-chats-list-item[2]"));
     private final SelenideElement lastMessageInChat = $(By.xpath(
         "//*[@id=\"msg_layer\"]/msg-app/div/msg-page/div[2]/msg-chat/div/section/div/msg-message-list/div/div[2]/msg" +
             "-message[last()]/div[1]/div/div/div"));
