@@ -19,8 +19,8 @@ public class MessagesPage extends BasePage {
 
     public static final String MESSAGES_URL = "https://ok.ru/messages";
 
-    private final By chatsSection = By.xpath(".//msg-chats-panel");
-    private final By messageSection = By.xpath(".//msg-chat");
+    private static final By chatsSection = By.xpath(".//msg-chats-panel");
+    private static final By messageSection = By.xpath(".//msg-chat");
 
     /**
      * Открыть сообщения в чате

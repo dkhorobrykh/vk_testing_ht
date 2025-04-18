@@ -28,6 +28,8 @@ public class GuestPage extends BasePage {
 
     @Override
     public void validateComponent(SelenideElement item) {
-        $$(someGuest).shouldHave(CollectionCondition.sizeGreaterThan(0));
+        $$(someGuest).shouldHave(CollectionCondition
+            .sizeGreaterThan(0)
+            .because("Нет ни одного гостя в списке"));
     }
 }

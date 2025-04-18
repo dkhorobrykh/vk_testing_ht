@@ -16,7 +16,7 @@ import pages.messages.MessagesPage;
  */
 public class ProfilePage extends BasePage {
 
-    public final static String PROFILE_URL = "https://ok.ru/";
+    public static final String PROFILE_URL = "https://ok.ru/";
 
     private static final By userName = By.xpath(".//*[contains(@data-l, 'userPage')]");
     private static final By guestButton = By.xpath(".//*[contains(@data-l, 'guests')]");
@@ -94,8 +94,6 @@ public class ProfilePage extends BasePage {
 
     @Override
     public void validateComponent(SelenideElement item) {
-
-        item.shouldBe(visible.because("Страница профиля не загрузилась"));
 
         item
             .$(userName)

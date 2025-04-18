@@ -9,11 +9,9 @@ import org.junit.jupiter.api.Test;
 import pages.LoginPage;
 import pages.ProfilePage;
 import tests.TestType;
+import utils.BotRegistry;
 
 public class LoginTest extends BaseUITest {
-
-    private static final String wrongUserLogin = "wrong";
-    private static final String wrongUserPassword = "wrong";
 
     @Test
     @Tag(TestType.FAST)
@@ -21,15 +19,15 @@ public class LoginTest extends BaseUITest {
     public void loginWithValidCredentialsShouldRedirectToProfilePage() {
         var profilePage = new LoginPage()
             .open()
-            .enterLogin(SECOND_USER_LOGIN)
-            .enterPassword(SECOND_USER_PASSWORD)
+            .enterLogin(secondUser.getLogin())
+            .enterPassword(secondUser.getPassword())
             .login();
 
         assertAll(
             () -> assertCurrentUrlEquals(ProfilePage.PROFILE_URL),
             () -> assertThat(profilePage.getUserName())
                 .as("Имя пользователя должно совпадать с именем заходящего пользователя")
-                .isEqualTo(SECOND_USER_NAME)
+                .isEqualTo(secondUser.getName())
         );
 
     }
@@ -42,9 +40,13 @@ public class LoginTest extends BaseUITest {
 
         loginPage
             .open()
-            .enterLogin(wrongUserLogin)
-            .enterPassword(wrongUserPassword)
-            .login();
+            .enterLogin(BotRegistry
+                .getBotWithInvalidCredentials()
+                .getLogin())
+            .enterPassword(BotRegistry
+                .getBotWithInvalidCredentials()
+                .getPassword())
+            .login(false);
 
         var wrongLoginExceptionText = loginPage.getWrongLoginExceptionText();
         assertThat(wrongLoginExceptionText)

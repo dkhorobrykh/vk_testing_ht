@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Timeout;
 import org.openqa.selenium.chrome.ChromeOptions;
+import utils.BotRegistry;
+import utils.TestBot;
 
 /**
  * Базовый класс UI тестов
@@ -21,22 +23,15 @@ public class BaseUITest {
 
     protected final static String BASE_URL = "https://ok.ru/";
 
-    protected final static String FIRST_USER_LOGIN = "79617542986";
-    protected final static String FIRST_USER_PASSWORD = "botForAutotests123!";
-    protected final static String FIRST_USER_NAME = "Иван Иванов";
-    protected final static String FIRST_USER_ID = "910117848542";
-
-    protected final static String SECOND_USER_LOGIN = "79223513163";
-    protected final static String SECOND_USER_PASSWORD = "botForAutotests123!";
-    protected final static String SECOND_USER_NAME = "Иван2 Иванов2";
-    protected final static String SECOND_USER_ID = "910109040312";
+    protected static TestBot firstUser = BotRegistry.getFirstBot();
+    protected static TestBot secondUser = BotRegistry.getSecondBot();
 
     /**
      * Установка конфигурации
      */
     @BeforeAll
     public static void setUp() {
-        //        Configuration.headless = true;
+        Configuration.headless = false;
         Configuration.browser = "chrome";
 
         var options = new ChromeOptions();

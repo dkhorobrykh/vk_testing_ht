@@ -60,15 +60,24 @@ public class LoginPage extends BasePage {
     }
 
     /**
-     * Нажать кнопку входа и, в случае успешной авторизации, перейти на страницу профиля
+     * Нажать кнопку входа и перейти на страницу профиля
      *
      * @return страница профиля
      */
-    public ProfilePage login() {
+    public BasePage login(boolean needRedirect) {
         $(loginButton)
             .shouldBe(visible.because("Кнопка входа отсутствует"))
             .click();
-        return new ProfilePage();
+        return needRedirect ? new ProfilePage() : this;
+    }
+
+    /**
+     * Нажать кнопку входа. В случае не передачи флага needRedirect, ожидаем корректный переход на ProfilePage
+     *
+     * @return текущая страница с логином
+     */
+    public ProfilePage login() {
+        return (ProfilePage) login(true);
     }
 
     /**
@@ -84,8 +93,6 @@ public class LoginPage extends BasePage {
 
     @Override
     public void validateComponent(SelenideElement item) {
-        item.shouldBe(visible.because("Страница логина не прогрузилась"));
-
         item
             .$(loginInput)
             .shouldBe(visible.because("Поле ввода логина отсутствует"));
