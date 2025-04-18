@@ -18,7 +18,7 @@ import utils.TestBot;
 /**
  * Базовый класс UI тестов
  */
-@Timeout(value = 30, unit = TimeUnit.SECONDS)
+@Timeout(value = 60, unit = TimeUnit.SECONDS)
 public class BaseUITest {
 
     protected final static String BASE_URL = "https://ok.ru/";
