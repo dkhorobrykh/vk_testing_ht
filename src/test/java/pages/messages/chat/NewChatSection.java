@@ -15,6 +15,11 @@ public class NewChatSection extends LoadableComponent {
 
     private static final By finishChatCreateButton = By.xpath(".//*[@data-tsid='finish_create_chat_button']");
 
+    /**
+     * Конструктор для вызова метода с валидацией прогрузки страницы
+     *
+     * @param item корневой элемент
+     */
     public NewChatSection(SelenideElement item) {
         super(item);
         this.item = item;

@@ -20,6 +20,11 @@ public class MessageSection extends LoadableComponent {
     private static final By messageInputField = By.xpath(".//*[@data-tsid='write_msg_input-input']");
     private static final By sendButton = By.xpath(".//*[@data-tsid='button_send']");
 
+    /**
+     * Конструктор для вызова метода с валидацией прогрузки страницы
+     *
+     * @param item корневой элемент
+     */
     public MessageSection(SelenideElement item) {
         super(item);
         this.item = item;

@@ -24,7 +24,7 @@ public class ChatSection extends LoadableComponent {
     private static final By newChatSection = By.xpath(".//msg-new-chat");
 
     /**
-     * Конструктор, вызывающий валидацию страницы
+     * Конструктор для вызова метода с валидацией прогрузки страницы
      *
      * @param item корневой элемент
      */

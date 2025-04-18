@@ -18,7 +18,6 @@ public class LoginTest extends BaseUITest {
     @DisplayName("Залогиниться с корректными данными, должен перенаправить на основную страницу пользователя")
     public void loginWithValidCredentialsShouldRedirectToProfilePage() {
         var profilePage = new LoginPage()
-            .open()
             .enterLogin(secondUser.getLogin())
             .enterPassword(secondUser.getPassword())
             .login();
@@ -39,7 +38,6 @@ public class LoginTest extends BaseUITest {
         var loginPage = new LoginPage();
 
         loginPage
-            .open()
             .enterLogin(BotRegistry
                 .getBotWithInvalidCredentials()
                 .getLogin())

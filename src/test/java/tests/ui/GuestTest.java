@@ -18,7 +18,6 @@ public class GuestTest extends BaseUITest {
     public void guestShouldBeDisplayedInTheGuestList() {
         log.info("Авторизуемся с пользователем #1");
         var profilePage1 = new LoginPage()
-            .open()
             .enterLogin(firstUser.getLogin())
             .enterPassword(firstUser.getPassword())
             .login();

@@ -14,6 +14,11 @@ public class MessageWrapper extends LoadableComponent {
 
     private final SelenideElement item;
 
+    /**
+     * Конструктор для вызова метода с валидацией прогрузки страницы
+     *
+     * @param item корневой элемент
+     */
     public MessageWrapper(SelenideElement item) {
         super(item);
         this.item = item;

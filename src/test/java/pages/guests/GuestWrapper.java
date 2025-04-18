@@ -15,6 +15,11 @@ public class GuestWrapper extends LoadableComponent {
 
     private static final By guestName = By.xpath(".//*[@class='n-t bold']");
 
+    /**
+     * Конструктор для вызова метода с валидацией прогрузки страницы
+     *
+     * @param item корневой элемент
+     */
     public GuestWrapper(SelenideElement item) {
         super(item);
         this.item = item;

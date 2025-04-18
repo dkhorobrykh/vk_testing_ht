@@ -3,19 +3,16 @@ package utils;
 import com.codeborne.selenide.SelenideElement;
 
 /**
- * Класс, позволяющий валидировать полноценную загрузку страницы (использующий паттерн LoadableComponent)
+ * Класс, позволяющий валидировать загрузку страницы (использующий паттерн LoadableComponent)
  */
 public abstract class LoadableComponent {
 
-    private final SelenideElement item;
-
     public LoadableComponent(SelenideElement item) {
-        this.item = item;
         validateComponent(item);
     }
 
     /**
-     * Метод, позволяющий валидировать полную загрузку компонента
+     * Метод, позволяющий валидировать загрузку компонента
      */
     public abstract void validateComponent(SelenideElement item);
 }

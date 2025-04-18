@@ -18,18 +18,9 @@ public class LoginPage extends BasePage {
     private static final By loginInput = By.xpath(".//*[@id='field_email']");
     private static final By passwordInput = By.xpath(".//*[@id='field_password']");
     private static final By loginButton = By.xpath(".//*[contains(@data-l, 'sign_in')]");
-    private static final By wrongLoginException = By.xpath("//*[contains(@class, 'login_error')]");
+    private static final By wrongLoginException = By.xpath(".//*[contains(@class, 'login_error')]");
 
     public static final String WRONG_LOGIN_EXCEPTION_TEXT = "Неправильно указан логин и/или пароль";
-
-    /**
-     * Открыть страницу логина
-     */
-    public LoginPage open() {
-        Selenide.open(LOGIN_URL);
-        $(loginButton).shouldBe(visible.because("Кнопка входа отсутствует, страница не прогрузилась"));
-        return this;
-    }
 
     /**
      * Ввести логин пользователя в соответствующее поле

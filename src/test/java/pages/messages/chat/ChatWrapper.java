@@ -13,6 +13,11 @@ public class ChatWrapper extends LoadableComponent {
 
     private final SelenideElement item;
 
+    /**
+     * Конструктор для вызова метода с валидацией прогрузки страницы
+     *
+     * @param item корневой элемент
+     */
     public ChatWrapper(SelenideElement item) {
         super(item);
         this.item = item;

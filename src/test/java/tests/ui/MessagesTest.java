@@ -25,7 +25,6 @@ public class MessagesTest extends BaseUITest {
     public void loginAndGoToMessagesPage() {
         log.info("Авторизуемся с пользователем #1");
         var profilePage = new LoginPage()
-            .open()
             .enterLogin(firstUser.getLogin())
             .enterPassword(firstUser.getPassword())
             .login();
