@@ -16,7 +16,9 @@ public class GuestPage {
     private final By firstGuestName = By.xpath("//*[@class='user-grid-card_cnt'][1]//a[@class='n-t bold']");
 
     /**
-     * Получает имя последнего гостя
+     * Получить имя последнего гостя
+     *
+     * @return имя последнего гостя
      */
     public String getFirstGuestName() {
         return $(firstGuestName)

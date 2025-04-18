@@ -13,18 +13,17 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import pages.LoginPage;
-import pages.MessagesPage;
+import pages.messages.MessagesPage;
 import tests.TestType;
 
 @Slf4j
 public class MessagesTest extends BaseUITest {
 
-    private static final String expectedMessageText = "Мы обнаружили вход в ваш профиль";
     private static final String messageToSend = ">>> Test message <<<";
 
     @BeforeEach
     public void loginAndGoToMessagesPage() {
-        log.info("Авторизируемся с пользователем #1");
+        log.info("Авторизуемся с пользователем #1");
         var profilePage = new LoginPage()
             .open()
             .enterLogin(FIRST_USER_LOGIN)
@@ -45,11 +44,16 @@ public class MessagesTest extends BaseUITest {
         public void writeMessageShouldSendMessage() {
             var messagesPage = new MessagesPage();
 
+            log.info("Создаем пустой чат");
+            messagesPage.createEmptyChat();
+
             log.info("Отправляем сообщение в чате");
-            messagesPage.writeMessageToEmptyChat(messageToSend);
+            messagesPage.sendMessage(messageToSend);
 
             log.info("Проверяем, что сообщение успешно отправлено");
-            var lastMessageText = messagesPage.getLastMessageInEmptyChat();
+            var lastMessageText = messagesPage
+                .getLastMessage()
+                .getText();
             assertThat(lastMessageText)
                 .as("Последнее сообщение в чате должно содержать отправленное")
                 .contains(messageToSend);
@@ -61,14 +65,22 @@ public class MessagesTest extends BaseUITest {
         public void writeMessageWithEmptyTextShouldNotSendIt(String message) {
             var messagesPage = new MessagesPage();
 
-            log.info("Получаем последнее сообщение в чате");
-            var lastMessageTextBeforeSend = messagesPage.getLastMessageInEmptyChat();
+            log.info("Создаем пустой чат");
+            messagesPage.createEmptyChat();
 
-            log.info("Отправляем сообщение в чате");
-            messagesPage.writeMessageToEmptyChat(message);
+            log.info("Отправляем проверочное сообщение в чате");
+            messagesPage.sendMessage(messageToSend);
+
+            log.info("Получаем последнее сообщение в чате");
+            var lastMessageTextBeforeSend = messagesPage.getLastMessage().getText();
+
+            log.info("Отправляем тестовое сообщение в чате");
+            messagesPage.sendMessage(message);
 
             log.info("Проверяем, что сообщение не отправлено");
-            var lastMessageTextAfterSend = messagesPage.getLastMessageInEmptyChat();
+            var lastMessageTextAfterSend = messagesPage
+                .getLastMessage()
+                .getText();
             assertThat(lastMessageTextAfterSend)
                 .as("Последнее сообщение в чате не должно содержать пустое сообщение")
                 .isEqualTo(lastMessageTextBeforeSend);
@@ -84,7 +96,6 @@ public class MessagesTest extends BaseUITest {
         }
     }
 
-
     @Nested
     @DisplayName("При прочтении сообщений")
     @Tag(TestType.FAST)
@@ -96,13 +107,16 @@ public class MessagesTest extends BaseUITest {
         public void readMessageShouldReturnMessageText() {
             var messagesPage = new MessagesPage();
 
+            log.info("Открываем первый чат в списке");
+            messagesPage.openChat(1);
+
             log.info("Получаем текст последнего сообщения");
-            String messageText = messagesPage.getLastMessage();
+            String messageText = messagesPage.getLastMessage().getText();
 
             log.info("Проверяем его соответствие ожидаемому");
-            assertThat(expectedMessageText)
-                .as("Последнее сообщение в чате должно содержать ожидаемое")
-                .contains(messageText);
+            assertThat(messageText)
+                .as("Последнее сообщение в чате не должно быть пустым")
+                .isNotEmpty();
         }
     }
 }

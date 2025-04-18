@@ -34,6 +34,8 @@ public class LoginPage {
      * Ввести логин пользователя в соответствующее поле
      *
      * @param login логин пользователя
+     *
+     * @return текущая страница с логином
      */
     public LoginPage enterLogin(String login) {
         $(loginInput)
@@ -46,6 +48,8 @@ public class LoginPage {
      * Ввести пароль пользователя в соответствующее поле
      *
      * @param password пароль пользователя
+     *
+     * @return текущая страница с логином
      */
     public LoginPage enterPassword(String password) {
         $(passwordInput)
@@ -56,6 +60,8 @@ public class LoginPage {
 
     /**
      * Нажать кнопку входа и, в случае успешной авторизации, перейти на страницу профиля
+     *
+     * @return страница профиля
      */
     public ProfilePage login() {
         $(loginButton)
@@ -66,6 +72,8 @@ public class LoginPage {
 
     /**
      * Получить текст ошибки при неправильных данных для входа
+     *
+     * @return текст ошибки
      */
     public String getWrongLoginExceptionText() {
         return $(wrongLoginException)

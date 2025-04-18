@@ -11,6 +11,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Timeout;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 /**
  * Базовый класс UI тестов
@@ -37,6 +38,10 @@ public class BaseUITest {
     public static void setUp() {
         //        Configuration.headless = true;
         Configuration.browser = "chrome";
+
+        var options = new ChromeOptions();
+        options.addArguments("--deny-permission-prompts");
+        Configuration.browserCapabilities = options;
     }
 
     /**
