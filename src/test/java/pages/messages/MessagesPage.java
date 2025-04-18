@@ -3,16 +3,19 @@ package pages.messages;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
+import pages.BasePage;
 import pages.messages.chat.ChatSection;
 import pages.messages.message.MessageSection;
 import pages.messages.message.MessageWrapper;
+import utils.LoadableComponent;
 
 /**
  * Страница сообщений (<a href="https://ok.ru/messages">перейти</a>) Позволяет получать и отправлять сообщения текущего
  * пользователя
  */
-public class MessagesPage {
+public class MessagesPage extends BasePage {
 
     public static final String MESSAGES_URL = "https://ok.ru/messages";
 
@@ -75,4 +78,10 @@ public class MessagesPage {
         return new MessageSection($(messageSection).shouldBe(visible.because("Секция с сообщениями отсутствует")));
     }
 
+    @Override
+    public void validateComponent(SelenideElement item) {
+        item
+            .$(chatsSection)
+            .shouldBe(visible.because("Секция с чатами отсутствует"));
+    }
 }

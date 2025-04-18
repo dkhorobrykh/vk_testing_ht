@@ -23,6 +23,9 @@ public class ChatWrapper extends LoadableComponent {
         item.shouldBe(visible.because("Чат отсутствует"));
     }
 
+    /**
+     * Кликнуть по чату
+     */
     public void clickOnChat() {
         item.click();
     }

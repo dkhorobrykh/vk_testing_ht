@@ -3,8 +3,6 @@ package pages.messages.message;
 import static com.codeborne.selenide.Condition.visible;
 
 import com.codeborne.selenide.SelenideElement;
-import java.util.List;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import pages.messages.MessagesPage;
@@ -33,30 +31,22 @@ public class MessageSection extends LoadableComponent {
 
         item.shouldBe(visible.because("Список сообщений не прогрузился"));
 
-        item.$(messageInputField)
+        item
+            .$(messageInputField)
             .shouldBe(visible.because("Поле ввода сообщения не найдено"));
 
-        item.$(sendButton)
+        item
+            .$(sendButton)
             .shouldBe(visible.because("Кнопка отправки сообщения не найдена"));
 
         log.info("Блок с сообщениями успешно провалидирован");
     }
 
-
-    public List<MessageWrapper> getAllMessages(Integer index) {
-        return item
-            .$$(someMessage)
-            .stream()
-            .map(MessageWrapper::new)
-            .toList();
-    }
-
-    public MessageWrapper getMessage(Integer index) {
-        return new MessageWrapper(item
-            .$$(someMessage)
-            .get(index)
-            .shouldBe(visible.because("Сообщение с индексом %s отсутствует".formatted(index))));
-    }
+    /**
+     * Получить последнее сообщение в чате
+     *
+     * @return обертка последнего сообщения
+     */
 
     public MessageWrapper getLastMessage() {
         return new MessageWrapper(item
@@ -65,6 +55,11 @@ public class MessageSection extends LoadableComponent {
             .shouldBe(visible.because("Последнее сообщение отсутствует")));
     }
 
+    /**
+     * Отправить сообщение в чат
+     *
+     * @param message текст сообщения
+     */
     public void sendMessage(String message) {
         item
             .$(messageInputField)

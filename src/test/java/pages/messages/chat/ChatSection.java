@@ -5,7 +5,6 @@ import static com.codeborne.selenide.Selenide.$;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.SelenideElement;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import pages.messages.MessagesPage;
@@ -60,8 +59,6 @@ public class ChatSection extends LoadableComponent {
     public void createNewEmptyChat() {
         log.info("Создаем новый пустой чат");
 
-        item.shouldBe(visible.because("Список чатов не прогрузился"));
-
         log.info("Открываем меню создания нового чата");
         item
             .$(createChatMenuButton)
@@ -84,18 +81,11 @@ public class ChatSection extends LoadableComponent {
     }
 
     /**
-     * Получить список всех чатов на странице
+     * Получить чат по индексу
      *
-     * @return список чатов в обертке {@link ChatWrapper}
+     * @param index индекс чата в списке
+     * @return обертка чата
      */
-    public List<ChatWrapper> getAllChats() {
-        return item
-            .$$(someChat)
-            .stream()
-            .map(ChatWrapper::new)
-            .toList();
-    }
-
     public ChatWrapper getChat(Integer index) {
         log.info(
             "Получаем чат с индексом {}",
@@ -103,7 +93,7 @@ public class ChatSection extends LoadableComponent {
         );
 
         var chatElement = item
-            .$$(By.xpath(".//msg-chats-list-item"))
+            .$$(someChat)
             .get(index);
         return new ChatWrapper(chatElement);
     }

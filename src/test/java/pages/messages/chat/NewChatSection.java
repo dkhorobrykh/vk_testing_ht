@@ -29,6 +29,9 @@ public class NewChatSection extends LoadableComponent {
             .shouldBe(visible.because("Кнопка завершения создания нового чата не найдена"));
     }
 
+    /**
+     * Кликнуть по кнопке завершения создания нового чата
+     */
     public void clickOnCreateNewChatButton() {
         item
             .$(finishChatCreateButton)

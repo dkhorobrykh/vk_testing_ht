@@ -3,7 +3,6 @@ package pages.messages.message;
 import static com.codeborne.selenide.Condition.visible;
 
 import com.codeborne.selenide.SelenideElement;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import utils.LoadableComponent;
 
@@ -25,9 +24,13 @@ public class MessageWrapper extends LoadableComponent {
         item.shouldBe(visible.because("Сообщение не прогрузилось"));
     }
 
+    /**
+     * Получить текст сообщения
+     *
+     * @return текст сообщения
+     */
     public String getText() {
-        return item
-            .getText();
+        return item.getText();
     }
 
 }
