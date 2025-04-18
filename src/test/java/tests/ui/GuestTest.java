@@ -1,5 +1,6 @@
 package tests.ui;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +17,8 @@ public class GuestTest extends BaseUITest {
     @Tag(TestType.SLOW)
     @DisplayName("Перейти на страницу другого пользователя, проверить отображение в списке гостей")
     public void guestShouldBeDisplayedInTheGuestList() {
-        var loginPage = new LoginPage();
-
         log.info("Авторизуемся с пользователем #1");
-        var profilePage1 = loginPage
+        var profilePage1 = new LoginPage()
             .open()
             .enterLogin(FIRST_USER_LOGIN)
             .enterPassword(FIRST_USER_PASSWORD)
@@ -30,7 +29,7 @@ public class GuestTest extends BaseUITest {
             .goToProfilePage(SECOND_USER_ID);
 
         log.info("Выходим из профиля пользователя #1");
-        loginPage = profilePage1.signOut();
+        var loginPage = profilePage1.signOut();
 
         log.info("Авторизуемся с пользователем #2");
         profilePage2 = loginPage
@@ -43,7 +42,10 @@ public class GuestTest extends BaseUITest {
             .goToGuestPage();
 
         log.info("Проверяем, появился ли пользователь #1 в списке гостей пользователя #2");
-        assertEquals(FIRST_USER_NAME, guestPage.getFirstGuestName(), "Неверное имя пользователя на странице гостей");
+        var firstGuestName = guestPage.getFirstGuestName();
+        assertThat(firstGuestName)
+            .as("Имя первого гостя должно совпадать с именем пользователя #1")
+            .isEqualTo(FIRST_USER_NAME);
     }
 
 }

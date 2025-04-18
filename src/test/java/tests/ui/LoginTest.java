@@ -1,7 +1,7 @@
 package tests.ui;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -19,17 +19,17 @@ public class LoginTest extends BaseUITest {
     @Tag(TestType.FAST)
     @DisplayName("Залогиниться с корректными данными, должен перенаправить на основную страницу пользователя")
     public void loginWithValidCredentialsShouldRedirectToProfilePage() {
-        var loginPage = new LoginPage();
-
-        var profilePage = loginPage.open().enterLogin(SECOND_USER_LOGIN).enterPassword(SECOND_USER_PASSWORD).login();
+        var profilePage = new LoginPage()
+            .open()
+            .enterLogin(SECOND_USER_LOGIN)
+            .enterPassword(SECOND_USER_PASSWORD)
+            .login();
 
         assertAll(
             () -> assertCurrentUrlEquals(ProfilePage.PROFILE_URL),
-            () -> assertEquals(
-                SECOND_USER_NAME,
-                profilePage.getUserName(),
-                "Неверное имя пользователя на главной " + "странице"
-            )
+            () -> assertThat(profilePage.getUserName())
+                .as("Имя пользователя должно совпадать с именем заходящего пользователя")
+                .isEqualTo(SECOND_USER_NAME)
         );
 
     }
@@ -40,12 +40,15 @@ public class LoginTest extends BaseUITest {
     public void loginWithInvalidCredentialsShouldShowException() {
         var loginPage = new LoginPage();
 
-        loginPage.open().enterLogin(wrongUserLogin).enterPassword(wrongUserPassword).login();
+        loginPage
+            .open()
+            .enterLogin(wrongUserLogin)
+            .enterPassword(wrongUserPassword)
+            .login();
 
-        assertEquals(
-            LoginPage.WRONG_LOGIN_EXCEPTION_TEXT,
-            loginPage.getWrongLoginExceptionText(),
-            "Неверный текст " + "ошибки при вводе некорректных данных для входа"
-        );
+        var wrongLoginExceptionText = loginPage.getWrongLoginExceptionText();
+        assertThat(wrongLoginExceptionText)
+            .as("Текст ошибки при вводе некорректных данных для входа должен совпадать с ожидаемым")
+            .isEqualTo(LoginPage.WRONG_LOGIN_EXCEPTION_TEXT);
     }
 }
