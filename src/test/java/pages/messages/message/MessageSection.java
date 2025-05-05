@@ -3,6 +3,7 @@ package pages.messages.message;
 import static com.codeborne.selenide.Condition.visible;
 
 import com.codeborne.selenide.SelenideElement;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import pages.messages.MessagesPage;
@@ -14,11 +15,10 @@ import utils.LoadableComponent;
 @Slf4j
 public class MessageSection extends LoadableComponent {
 
-    private final SelenideElement item;
-
     private static final By SOME_MESSAGE = By.xpath(".//msg-message");
     private static final By MESSAGE_INPUT_FIELD = By.xpath(".//*[@data-tsid='write_msg_input-input']");
     private static final By SEND_BUTTON = By.xpath(".//*[@data-tsid='button_send']");
+    private final SelenideElement item;
 
     /**
      * Конструктор для вызова метода с валидацией прогрузки страницы
@@ -48,16 +48,17 @@ public class MessageSection extends LoadableComponent {
     }
 
     /**
-     * Получить последнее сообщение в чате
+     * Получить список сообщений в чате
      *
-     * @return обертка последнего сообщения
+     * @return список оберток сообщений
      */
 
-    public MessageWrapper getLastMessage() {
-        return new MessageWrapper(item
+    public List<MessageWrapper> getAllMessagesInChat() {
+        return item
             .$$(SOME_MESSAGE)
-            .last()
-            .shouldBe(visible.because("Последнее сообщение отсутствует")));
+            .stream()
+            .map(MessageWrapper::new)
+            .toList();
     }
 
     /**

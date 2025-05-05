@@ -11,9 +11,8 @@ import utils.LoadableComponent;
  */
 public class NewChatSection extends LoadableComponent {
 
-    private final SelenideElement item;
-
     private static final By FINISH_CHAT_CREATE_BUTTON = By.xpath(".//*[@data-tsid='finish_create_chat_button']");
+    private final SelenideElement item;
 
     /**
      * Конструктор для вызова метода с валидацией прогрузки страницы

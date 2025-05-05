@@ -4,6 +4,7 @@ import static com.codeborne.selenide.Selenide.$$;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.SelenideElement;
+import java.util.List;
 import org.openqa.selenium.By;
 import pages.BasePage;
 
@@ -18,12 +19,15 @@ public class GuestPage extends BasePage {
     private static final By SOME_GUEST = By.xpath(".//*[contains(@data-l, 'targetUserId')]");
 
     /**
-     * Получить имя последнего гостя
+     * Получить список гостей
      *
-     * @return имя последнего гостя
+     * @return список гостей
      */
-    public String getFirstGuestName() {
-        return new GuestWrapper($$(SOME_GUEST).get(0)).getName();
+    public List<GuestWrapper> getAllGuests() {
+        return $$(SOME_GUEST)
+            .stream()
+            .map(GuestWrapper::new)
+            .toList();
     }
 
     @Override

@@ -38,6 +38,15 @@ public class MessagesTest extends BaseUITest {
     @Tag(TestType.SLOW)
     public class WriteMessages {
 
+        private static Stream<Arguments> getEmptyMessagesData() {
+            return Stream.of(
+                Arguments.of(""),
+                Arguments.of("     "),
+                Arguments.of("\n"),
+                Arguments.of(" ")
+            );
+        }
+
         @Test
         @DisplayName("Написать сообщение в чат")
         public void writeMessageShouldSendMessage() {
@@ -50,8 +59,15 @@ public class MessagesTest extends BaseUITest {
             messagesPage.sendMessage(MESSAGE_TO_SEND);
 
             log.info("Проверяем, что сообщение успешно отправлено");
-            var lastMessageText = messagesPage
-                .getLastMessage()
+            var allMessages = messagesPage
+                .getMessageSection()
+                .getAllMessagesInChat();
+            assertThat(allMessages)
+                .as("Сообщений в чате меньше требуемого")
+                .hasSizeGreaterThanOrEqualTo(1);
+
+            var lastMessageText = allMessages
+                .getLast()
                 .getText();
             assertThat(lastMessageText)
                 .as("Последнее сообщение в чате должно содержать отправленное")
@@ -71,29 +87,35 @@ public class MessagesTest extends BaseUITest {
             messagesPage.sendMessage(MESSAGE_TO_SEND);
 
             log.info("Получаем последнее сообщение в чате");
-            var lastMessageTextBeforeSend = messagesPage.getLastMessage().getText();
+            var allMessagesBeforeSend = messagesPage
+                .getMessageSection()
+                .getAllMessagesInChat();
+            assertThat(allMessagesBeforeSend)
+                .as("Сообщений в чате меньше требуемого")
+                .hasSizeGreaterThanOrEqualTo(1);
+            var lastMessageTextBeforeSend = allMessagesBeforeSend
+                .getLast()
+                .getText();
 
             log.info("Отправляем тестовое сообщение в чате");
             messagesPage.sendMessage(message);
 
             log.info("Проверяем, что сообщение не отправлено");
-            var lastMessageTextAfterSend = messagesPage
-                .getLastMessage()
+            var allMessagesAfterSend = messagesPage
+                .getMessageSection()
+                .getAllMessagesInChat();
+            assertThat(allMessagesAfterSend)
+                .as("Сообщений в чате меньше требуемого")
+                .hasSizeGreaterThanOrEqualTo(1);
+            var lastMessageTextAfterSend = allMessagesAfterSend
+                .getLast()
                 .getText();
             assertThat(lastMessageTextAfterSend)
                 .as("Последнее сообщение в чате не должно содержать пустое сообщение")
                 .isEqualTo(lastMessageTextBeforeSend);
         }
-
-        private static Stream<Arguments> getEmptyMessagesData() {
-            return Stream.of(
-                Arguments.of(""),
-                Arguments.of("     "),
-                Arguments.of("\n"),
-                Arguments.of(" ")
-            );
-        }
     }
+
 
     @Nested
     @DisplayName("При прочтении сообщений")
@@ -110,7 +132,15 @@ public class MessagesTest extends BaseUITest {
             messagesPage.openChat(1);
 
             log.info("Получаем текст последнего сообщения");
-            String messageText = messagesPage.getLastMessage().getText();
+            var allMessages = messagesPage
+                .getMessageSection()
+                .getAllMessagesInChat();
+            assertThat(allMessages)
+                .as("Сообщений в чате меньше требуемого")
+                .hasSizeGreaterThanOrEqualTo(1);
+            String messageText = allMessages
+                .getLast()
+                .getText();
 
             log.info("Проверяем его соответствие ожидаемому");
             assertThat(messageText)

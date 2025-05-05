@@ -35,11 +35,17 @@ public class GuestTest extends BaseUITest {
             .login();
 
         log.info("Переходим на страницу гостей пользователя #2");
-        var guestPage = profilePage2
-            .goToGuestPage();
+        var guestPage = profilePage2.goToGuestPage();
 
         log.info("Проверяем, появился ли пользователь #1 в списке гостей пользователя #2");
-        var firstGuestName = guestPage.getFirstGuestName();
+        var guests = guestPage.getAllGuests();
+        assertThat(guests)
+            .as("Список гостей пуст")
+            .isNotEmpty();
+
+        var firstGuestName = guests
+            .getFirst()
+            .getName();
         assertThat(firstGuestName)
             .as("Имя первого гостя должно совпадать с именем пользователя #1")
             .isEqualTo(FIRST_USER.getName());

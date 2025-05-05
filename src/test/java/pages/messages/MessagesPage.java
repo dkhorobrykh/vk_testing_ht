@@ -8,7 +8,6 @@ import org.openqa.selenium.By;
 import pages.BasePage;
 import pages.messages.chat.ChatSection;
 import pages.messages.message.MessageSection;
-import pages.messages.message.MessageWrapper;
 
 /**
  * Страница сообщений (<a href="https://ok.ru/messages">перейти</a>) Позволяет получать и отправлять сообщения текущего
@@ -51,15 +50,6 @@ public class MessagesPage extends BasePage {
     }
 
     /**
-     * Получить последнее сообщение в открытом чате
-     *
-     * @return последнее сообщение в открытом чате
-     */
-    public MessageWrapper getLastMessage() {
-        return getMessageSection().getLastMessage();
-    }
-
-    /**
      * Создать новый пустой чат
      */
     public void createEmptyChat() {
@@ -73,7 +63,7 @@ public class MessagesPage extends BasePage {
      *
      * @return секция с сообщениями
      */
-    private MessageSection getMessageSection() {
+    public MessageSection getMessageSection() {
         return new MessageSection($(MESSAGE_SECTION).shouldBe(visible.because("Секция с сообщениями отсутствует")));
     }
 
