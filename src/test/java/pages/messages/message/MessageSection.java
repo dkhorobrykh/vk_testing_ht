@@ -16,9 +16,9 @@ public class MessageSection extends LoadableComponent {
 
     private final SelenideElement item;
 
-    private static final By someMessage = By.xpath(".//msg-message");
-    private static final By messageInputField = By.xpath(".//*[@data-tsid='write_msg_input-input']");
-    private static final By sendButton = By.xpath(".//*[@data-tsid='button_send']");
+    private static final By SOME_MESSAGE = By.xpath(".//msg-message");
+    private static final By MESSAGE_INPUT_FIELD = By.xpath(".//*[@data-tsid='write_msg_input-input']");
+    private static final By SEND_BUTTON = By.xpath(".//*[@data-tsid='button_send']");
 
     /**
      * Конструктор для вызова метода с валидацией прогрузки страницы
@@ -37,11 +37,11 @@ public class MessageSection extends LoadableComponent {
         item.shouldBe(visible.because("Список сообщений не прогрузился"));
 
         item
-            .$(messageInputField)
+            .$(MESSAGE_INPUT_FIELD)
             .shouldBe(visible.because("Поле ввода сообщения не найдено"));
 
         item
-            .$(sendButton)
+            .$(SEND_BUTTON)
             .shouldBe(visible.because("Кнопка отправки сообщения не найдена"));
 
         log.info("Блок с сообщениями успешно провалидирован");
@@ -55,7 +55,7 @@ public class MessageSection extends LoadableComponent {
 
     public MessageWrapper getLastMessage() {
         return new MessageWrapper(item
-            .$$(someMessage)
+            .$$(SOME_MESSAGE)
             .last()
             .shouldBe(visible.because("Последнее сообщение отсутствует")));
     }
@@ -67,11 +67,11 @@ public class MessageSection extends LoadableComponent {
      */
     public void sendMessage(String message) {
         item
-            .$(messageInputField)
+            .$(MESSAGE_INPUT_FIELD)
             .setValue(message);
 
         item
-            .$(sendButton)
+            .$(SEND_BUTTON)
             .click();
     }
 }

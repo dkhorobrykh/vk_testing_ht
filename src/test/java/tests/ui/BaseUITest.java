@@ -23,8 +23,8 @@ public class BaseUITest {
 
     protected final static String BASE_URL = "https://ok.ru/";
 
-    protected static TestBot firstUser = BotRegistry.getFirstBot();
-    protected static TestBot secondUser = BotRegistry.getSecondBot();
+    protected static final TestBot FIRST_USER = BotRegistry.getFirstBot();
+    protected static final TestBot SECOND_USER = BotRegistry.getSecondBot();
 
     /**
      * Установка конфигурации

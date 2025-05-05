@@ -19,14 +19,14 @@ import tests.TestType;
 @Slf4j
 public class MessagesTest extends BaseUITest {
 
-    private static final String messageToSend = ">>> Test message <<<";
+    private static final String MESSAGE_TO_SEND = ">>> Test message <<<";
 
     @BeforeEach
     public void loginAndGoToMessagesPage() {
         log.info("Авторизуемся с пользователем #1");
         var profilePage = new LoginPage()
-            .enterLogin(firstUser.getLogin())
-            .enterPassword(firstUser.getPassword())
+            .enterLogin(FIRST_USER.getLogin())
+            .enterPassword(FIRST_USER.getPassword())
             .login();
 
         log.info("Переходим на страницу сообщений");
@@ -47,7 +47,7 @@ public class MessagesTest extends BaseUITest {
             messagesPage.createEmptyChat();
 
             log.info("Отправляем сообщение в чате");
-            messagesPage.sendMessage(messageToSend);
+            messagesPage.sendMessage(MESSAGE_TO_SEND);
 
             log.info("Проверяем, что сообщение успешно отправлено");
             var lastMessageText = messagesPage
@@ -55,7 +55,7 @@ public class MessagesTest extends BaseUITest {
                 .getText();
             assertThat(lastMessageText)
                 .as("Последнее сообщение в чате должно содержать отправленное")
-                .contains(messageToSend);
+                .contains(MESSAGE_TO_SEND);
         }
 
         @ParameterizedTest
@@ -68,7 +68,7 @@ public class MessagesTest extends BaseUITest {
             messagesPage.createEmptyChat();
 
             log.info("Отправляем проверочное сообщение в чате");
-            messagesPage.sendMessage(messageToSend);
+            messagesPage.sendMessage(MESSAGE_TO_SEND);
 
             log.info("Получаем последнее сообщение в чате");
             var lastMessageTextBeforeSend = messagesPage.getLastMessage().getText();

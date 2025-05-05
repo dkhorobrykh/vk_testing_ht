@@ -18,21 +18,20 @@ public class GuestTest extends BaseUITest {
     public void guestShouldBeDisplayedInTheGuestList() {
         log.info("Авторизуемся с пользователем #1");
         var profilePage1 = new LoginPage()
-            .enterLogin(firstUser.getLogin())
-            .enterPassword(firstUser.getPassword())
+            .enterLogin(FIRST_USER.getLogin())
+            .enterPassword(FIRST_USER.getPassword())
             .login();
 
         log.info("Переходим на профиль пользователя #2");
-        var profilePage2 = profilePage1
-            .goToProfilePage(secondUser.getId());
+        var profilePage2 = profilePage1.goToProfilePage(SECOND_USER.getId());
 
         log.info("Выходим из профиля пользователя #1");
         var loginPage = profilePage1.signOut();
 
         log.info("Авторизуемся с пользователем #2");
         profilePage2 = loginPage
-            .enterLogin(secondUser.getLogin())
-            .enterPassword(secondUser.getPassword())
+            .enterLogin(SECOND_USER.getLogin())
+            .enterPassword(SECOND_USER.getPassword())
             .login();
 
         log.info("Переходим на страницу гостей пользователя #2");
@@ -43,7 +42,7 @@ public class GuestTest extends BaseUITest {
         var firstGuestName = guestPage.getFirstGuestName();
         assertThat(firstGuestName)
             .as("Имя первого гостя должно совпадать с именем пользователя #1")
-            .isEqualTo(firstUser.getName());
+            .isEqualTo(FIRST_USER.getName());
     }
 
 }

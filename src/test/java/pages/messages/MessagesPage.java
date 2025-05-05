@@ -9,7 +9,6 @@ import pages.BasePage;
 import pages.messages.chat.ChatSection;
 import pages.messages.message.MessageSection;
 import pages.messages.message.MessageWrapper;
-import utils.LoadableComponent;
 
 /**
  * Страница сообщений (<a href="https://ok.ru/messages">перейти</a>) Позволяет получать и отправлять сообщения текущего
@@ -19,8 +18,8 @@ public class MessagesPage extends BasePage {
 
     public static final String MESSAGES_URL = "https://ok.ru/messages";
 
-    private static final By chatsSection = By.xpath(".//msg-chats-panel");
-    private static final By messageSection = By.xpath(".//msg-chat");
+    private static final By CHATS_SECTION = By.xpath(".//msg-chats-panel");
+    private static final By MESSAGE_SECTION = By.xpath(".//msg-chat");
 
     /**
      * Открыть сообщения в чате
@@ -39,7 +38,7 @@ public class MessagesPage extends BasePage {
      * @return секция с чатами
      */
     private ChatSection getChatSection() {
-        return new ChatSection($(chatsSection).shouldBe(visible.because("Секция с чатами отсутствует")));
+        return new ChatSection($(CHATS_SECTION).shouldBe(visible.because("Секция с чатами отсутствует")));
     }
 
     /**
@@ -75,13 +74,13 @@ public class MessagesPage extends BasePage {
      * @return секция с сообщениями
      */
     private MessageSection getMessageSection() {
-        return new MessageSection($(messageSection).shouldBe(visible.because("Секция с сообщениями отсутствует")));
+        return new MessageSection($(MESSAGE_SECTION).shouldBe(visible.because("Секция с сообщениями отсутствует")));
     }
 
     @Override
     public void validateComponent(SelenideElement item) {
         item
-            .$(chatsSection)
+            .$(CHATS_SECTION)
             .shouldBe(visible.because("Секция с чатами отсутствует"));
     }
 }

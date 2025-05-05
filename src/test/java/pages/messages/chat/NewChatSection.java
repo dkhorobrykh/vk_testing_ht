@@ -13,7 +13,7 @@ public class NewChatSection extends LoadableComponent {
 
     private final SelenideElement item;
 
-    private static final By finishChatCreateButton = By.xpath(".//*[@data-tsid='finish_create_chat_button']");
+    private static final By FINISH_CHAT_CREATE_BUTTON = By.xpath(".//*[@data-tsid='finish_create_chat_button']");
 
     /**
      * Конструктор для вызова метода с валидацией прогрузки страницы
@@ -30,7 +30,7 @@ public class NewChatSection extends LoadableComponent {
         item.shouldBe(visible.because("Секция создания нового чата не прогрузилась"));
 
         item
-            .$(finishChatCreateButton)
+            .$(FINISH_CHAT_CREATE_BUTTON)
             .shouldBe(visible.because("Кнопка завершения создания нового чата не найдена"));
     }
 
@@ -39,7 +39,7 @@ public class NewChatSection extends LoadableComponent {
      */
     public void clickOnCreateNewChatButton() {
         item
-            .$(finishChatCreateButton)
+            .$(FINISH_CHAT_CREATE_BUTTON)
             .click();
     }
 }

@@ -18,10 +18,10 @@ public class ChatSection extends LoadableComponent {
 
     private final SelenideElement item;
 
-    private static final By createChatMenuButton = By.xpath(".//*[contains(@data-l, 'createMenu')]");
-    private static final By createChatButton = By.xpath(".//*[@data-tsid='plus_create_chat']");
-    private static final By someChat = By.xpath(".//msg-chats-list-item");
-    private static final By newChatSection = By.xpath(".//msg-new-chat");
+    private static final By CREATE_CHAT_MENU_BUTTON = By.xpath(".//*[contains(@data-l, 'createMenu')]");
+    private static final By CREATE_CHAT_BUTTON = By.xpath(".//*[@data-tsid='plus_create_chat']");
+    private static final By SOME_CHAT = By.xpath(".//msg-chats-list-item");
+    private static final By NEW_CHAT_SECTION = By.xpath(".//msg-new-chat");
 
     /**
      * Конструктор для вызова метода с валидацией прогрузки страницы
@@ -40,12 +40,12 @@ public class ChatSection extends LoadableComponent {
         item.shouldBe(visible.because("Блок с чатами не отображается"));
 
         item
-            .$(createChatMenuButton)
+            .$(CREATE_CHAT_MENU_BUTTON)
             .hover()
             .shouldBe(visible.because("Кнопка открытия меню создания чата отсутствует"));
 
         item
-            .$$(someChat)
+            .$$(SOME_CHAT)
             .shouldHave(CollectionCondition
                 .sizeGreaterThan(0)
                 .because("Нет ни одного чата в списке"));
@@ -61,20 +61,20 @@ public class ChatSection extends LoadableComponent {
 
         log.info("Открываем меню создания нового чата");
         item
-            .$(createChatMenuButton)
+            .$(CREATE_CHAT_MENU_BUTTON)
             .hover()
             .click();
 
         log.info("Создаем новый чат");
         item
-            .$(createChatButton)
+            .$(CREATE_CHAT_BUTTON)
             .shouldBe(visible.because("Кнопка создания нового чата отсутствует"))
             .click();
 
         log.info("Завершаем создание нового чата");
 
         var newChatSectionElement =
-            new NewChatSection($(newChatSection).shouldBe(visible.because("Секция создания нового чата отсутствует")));
+            new NewChatSection($(NEW_CHAT_SECTION).shouldBe(visible.because("Секция создания нового чата отсутствует")));
         newChatSectionElement.clickOnCreateNewChatButton();
 
         log.info("Чат успешно создан");
@@ -93,7 +93,7 @@ public class ChatSection extends LoadableComponent {
         );
 
         var chatElement = item
-            .$$(someChat)
+            .$$(SOME_CHAT)
             .get(index);
         return new ChatWrapper(chatElement);
     }

@@ -15,7 +15,7 @@ public class GuestPage extends BasePage {
 
     public static final String GUEST_LIST_URL = "https://ok.ru/guests";
 
-    private static final By someGuest = By.xpath(".//*[contains(@data-l, 'targetUserId')]");
+    private static final By SOME_GUEST = By.xpath(".//*[contains(@data-l, 'targetUserId')]");
 
     /**
      * Получить имя последнего гостя
@@ -23,12 +23,12 @@ public class GuestPage extends BasePage {
      * @return имя последнего гостя
      */
     public String getFirstGuestName() {
-        return new GuestWrapper($$(someGuest).get(0)).getName();
+        return new GuestWrapper($$(SOME_GUEST).get(0)).getName();
     }
 
     @Override
     public void validateComponent(SelenideElement item) {
-        $$(someGuest).shouldHave(CollectionCondition
+        $$(SOME_GUEST).shouldHave(CollectionCondition
             .sizeGreaterThan(0)
             .because("Нет ни одного гостя в списке"));
     }

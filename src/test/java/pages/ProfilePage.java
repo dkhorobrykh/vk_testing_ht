@@ -18,12 +18,12 @@ public class ProfilePage extends BasePage {
 
     public static final String PROFILE_URL = "https://ok.ru/";
 
-    private static final By userName = By.xpath(".//*[contains(@data-l, 'userPage')]");
-    private static final By guestButton = By.xpath(".//*[contains(@data-l, 'guests')]");
-    private static final By messagesButton = By.xpath(".//*[@id='msg_toolbar_button']");
-    private static final By rightMenuButton = By.xpath(".//button[contains(@class, 'ucard-mini')]");
-    private static final By exitButton = By.xpath(".//*[contains(@data-l, 'logout')]");
-    private static final By finalExitButton = By.xpath(".//input[contains(@data-l, 'logout')]");
+    private static final By USER_NAME = By.xpath(".//*[contains(@data-l, 'userPage')]");
+    private static final By GUEST_BUTTON = By.xpath(".//*[contains(@data-l, 'guests')]");
+    private static final By MESSAGES_BUTTON = By.xpath(".//*[@id='msg_toolbar_button']");
+    private static final By RIGHT_MENU_BUTTON = By.xpath(".//button[contains(@class, 'ucard-mini')]");
+    private static final By EXIT_BUTTON = By.xpath(".//*[contains(@data-l, 'logout')]");
+    private static final By FINAL_EXIT_BUTTON = By.xpath(".//input[contains(@data-l, 'logout')]");
 
     /**
      * Вернуть имя текущего пользователя
@@ -31,7 +31,7 @@ public class ProfilePage extends BasePage {
      * @return имя текущего пользователя
      */
     public String getUserName() {
-        return $(userName).getText();
+        return $(USER_NAME).getText();
     }
 
     /**
@@ -51,17 +51,17 @@ public class ProfilePage extends BasePage {
      * @return страница логина
      */
     public LoginPage signOut() {
-        $(rightMenuButton)
+        $(RIGHT_MENU_BUTTON)
             .shouldBe(visible.because("Правое верхнее меню отсутствует"))
             .hover()
             .click();
-        $(exitButton)
+        $(EXIT_BUTTON)
             .shouldBe(visible.because("Кнопка выхода отсутствует"))
             .click();
-        $(finalExitButton)
+        $(FINAL_EXIT_BUTTON)
             .shouldBe(visible.because("Финальная кнопка выхода отсутствует"))
             .click();
-        SelenideElement form = $(finalExitButton)
+        SelenideElement form = $(FINAL_EXIT_BUTTON)
             .closest("form")
             .should(appear.because("Форма диалога выхода не найдена"));
         form.submit();
@@ -74,7 +74,7 @@ public class ProfilePage extends BasePage {
      * @return страница со списком гостей
      */
     public GuestPage goToGuestPage() {
-        $(guestButton)
+        $(GUEST_BUTTON)
             .shouldBe(visible.because("Кнопка списка гостей отсутствует"))
             .click();
         return new GuestPage();
@@ -86,7 +86,7 @@ public class ProfilePage extends BasePage {
      * @return страница сообщений
      */
     public MessagesPage goToMessagesPage() {
-        $(messagesButton)
+        $(MESSAGES_BUTTON)
             .shouldBe(visible.because("Кнопка сообщений отсутствует"))
             .click();
         return new MessagesPage();
@@ -96,19 +96,19 @@ public class ProfilePage extends BasePage {
     public void validateComponent(SelenideElement item) {
 
         item
-            .$(userName)
+            .$(USER_NAME)
             .shouldBe(visible.because("Имя пользователя не найдено"));
 
         item
-            .$(guestButton)
+            .$(GUEST_BUTTON)
             .shouldBe(visible.because("Кнопка списка гостей отсутствует"));
 
         item
-            .$(messagesButton)
+            .$(MESSAGES_BUTTON)
             .shouldBe(visible.because("Кнопка сообщений отсутствует"));
 
         item
-            .$(rightMenuButton)
+            .$(RIGHT_MENU_BUTTON)
             .shouldBe(visible.because("Правое верхнее меню отсутствует"));
     }
 }
