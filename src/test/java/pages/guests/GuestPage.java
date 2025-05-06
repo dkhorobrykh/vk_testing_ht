@@ -12,17 +12,13 @@ import pages.BasePage;
  * Страница гостей (<a href="https://ok.ru/guests">перейти</a>) Выводит список гостей, посетивших страницу текущего
  * пользователя.
  */
-public class GuestPage extends BasePage {
+public class GuestPage extends BasePage implements IGuestPage {
 
     public static final String GUEST_LIST_URL = "https://ok.ru/guests";
 
     private static final By SOME_GUEST = By.xpath(".//*[contains(@data-l, 'targetUserId')]");
 
-    /**
-     * Получить список гостей
-     *
-     * @return список гостей
-     */
+    @Override
     public List<GuestWrapper> getAllGuests() {
         return $$(SOME_GUEST)
             .stream()

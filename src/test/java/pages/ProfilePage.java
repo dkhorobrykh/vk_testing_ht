@@ -7,8 +7,10 @@ import static com.codeborne.selenide.Selenide.open;
 
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
-import pages.guests.GuestPage;
+import pages.guests.GuestPageFactory;
+import pages.guests.IGuestPage;
 import pages.messages.MessagesPage;
+import pages.news.NewsSection;
 
 /**
  * Страница профиля пользователя (<a href="https://ok.ru/profile/">перейти</a>) Позволяет получить основную информацию о
@@ -24,6 +26,7 @@ public class ProfilePage extends BasePage {
     private static final By RIGHT_MENU_BUTTON = By.xpath(".//button[contains(@class, 'ucard-mini')]");
     private static final By EXIT_BUTTON = By.xpath(".//*[contains(@data-l, 'logout')]");
     private static final By FINAL_EXIT_BUTTON = By.xpath(".//input[contains(@data-l, 'logout')]");
+    private static final By NEWS_SECTION = By.xpath(".//*[contains(@class, 'feed-list')]");
 
     /**
      * Вернуть имя текущего пользователя
@@ -73,11 +76,11 @@ public class ProfilePage extends BasePage {
      *
      * @return страница со списком гостей
      */
-    public GuestPage goToGuestPage() {
+    public IGuestPage goToGuestPage() {
         $(GUEST_BUTTON)
             .shouldBe(visible.because("Кнопка списка гостей отсутствует"))
             .click();
-        return new GuestPage();
+        return GuestPageFactory.get($("body"));
     }
 
     /**
@@ -90,6 +93,10 @@ public class ProfilePage extends BasePage {
             .shouldBe(visible.because("Кнопка сообщений отсутствует"))
             .click();
         return new MessagesPage();
+    }
+
+    public NewsSection getNewsSection() {
+        return new NewsSection($(NEWS_SECTION).shouldBe(visible.because("Секция новостей не прогрузилась")));
     }
 
     @Override

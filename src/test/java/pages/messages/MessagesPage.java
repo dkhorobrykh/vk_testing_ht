@@ -36,26 +36,8 @@ public class MessagesPage extends BasePage {
      *
      * @return секция с чатами
      */
-    private ChatSection getChatSection() {
+    public ChatSection getChatSection() {
         return new ChatSection($(CHATS_SECTION).shouldBe(visible.because("Секция с чатами отсутствует")));
-    }
-
-    /**
-     * Отправить сообщение в открытый чат
-     *
-     * @param message текст сообщения для отправки
-     */
-    public void sendMessage(String message) {
-        getMessageSection().sendMessage(message);
-    }
-
-    /**
-     * Создать новый пустой чат
-     */
-    public void createEmptyChat() {
-        var chatSection = getChatSection();
-
-        chatSection.createNewEmptyChat();
     }
 
     /**

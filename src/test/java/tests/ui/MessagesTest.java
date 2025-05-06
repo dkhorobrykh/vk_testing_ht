@@ -53,10 +53,14 @@ public class MessagesTest extends BaseUITest {
             var messagesPage = new MessagesPage();
 
             log.info("Создаем пустой чат");
-            messagesPage.createEmptyChat();
+            messagesPage
+                .getChatSection()
+                .createNewEmptyChat();
 
             log.info("Отправляем сообщение в чате");
-            messagesPage.sendMessage(MESSAGE_TO_SEND);
+            messagesPage
+                .getMessageSection()
+                .sendMessage(MESSAGE_TO_SEND);
 
             log.info("Проверяем, что сообщение успешно отправлено");
             var allMessages = messagesPage
@@ -81,10 +85,14 @@ public class MessagesTest extends BaseUITest {
             var messagesPage = new MessagesPage();
 
             log.info("Создаем пустой чат");
-            messagesPage.createEmptyChat();
+            messagesPage
+                .getChatSection()
+                .createNewEmptyChat();
 
             log.info("Отправляем проверочное сообщение в чате");
-            messagesPage.sendMessage(MESSAGE_TO_SEND);
+            messagesPage
+                .getMessageSection()
+                .sendMessage(MESSAGE_TO_SEND);
 
             log.info("Получаем последнее сообщение в чате");
             var allMessagesBeforeSend = messagesPage
@@ -98,7 +106,9 @@ public class MessagesTest extends BaseUITest {
                 .getText();
 
             log.info("Отправляем тестовое сообщение в чате");
-            messagesPage.sendMessage(message);
+            messagesPage
+                .getMessageSection()
+                .sendMessage(message);
 
             log.info("Проверяем, что сообщение не отправлено");
             var allMessagesAfterSend = messagesPage

@@ -54,6 +54,7 @@ public class LoginPage extends BasePage {
      *
      * @return страница профиля
      */
+    // Тут была попытка в параметрический полиморфизм)
     public BasePage login(boolean needRedirect) {
         $(LOGIN_BUTTON)
             .shouldBe(visible.because("Кнопка входа отсутствует"))
