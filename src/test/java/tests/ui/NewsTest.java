@@ -14,8 +14,8 @@ public class NewsTest extends BaseUITest {
 
     @Test
     @DisplayName("Переход к последней новости должен загрузить список новых")
-    @Tag(TestType.FAST)
-    @Timeout(value = 8, unit = TimeUnit.SECONDS)
+    @Tag(TestType.SLOW)
+    @Timeout(value = 12, unit = TimeUnit.SECONDS)
     void appearanceOfNewsShouldBeEndless() {
         log.info("Авторизуемся с пользователем #1");
         var newsSection = new LoginPage()

@@ -21,6 +21,7 @@ public class ChatSection extends LoadableComponent {
     private static final By CREATE_CHAT_BUTTON = By.xpath(".//*[@data-tsid='plus_create_chat']");
     private static final By SOME_CHAT = By.xpath(".//msg-chats-list-item");
     private static final By NEW_CHAT_SECTION = By.xpath(".//msg-new-chat");
+    private static final By CONTROL_PANEL = By.xpath(".//*[@data-tsid='conversation_list_top_panel']");
     private final SelenideElement item;
 
     /**
@@ -113,8 +114,17 @@ public class ChatSection extends LoadableComponent {
 
         var allChats = getAllChats();
 
+        int deleted = 0;
         for (var chat : allChats) {
+            if (deleted >= quantity) {
+                break;
+            }
+            item
+                .$(CONTROL_PANEL)
+                .shouldBe(visible.because("Верхняя панель секции чатов отсутствует"))
+                .hover();
             removeChat(chat);
+            deleted++;
         }
     }
 

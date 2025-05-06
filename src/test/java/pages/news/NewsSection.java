@@ -1,6 +1,7 @@
 package pages.news;
 
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.SelenideElement;
@@ -35,10 +36,10 @@ public class NewsSection extends LoadableComponent {
     }
 
     /**
-     * Перейти к последней новости путем нажатия на Page END
+     * Перейти к последней новости путем нажатия на кнопку END
      */
     public void goToTheLastNews() {
-        item.sendKeys(Keys.END);
+        $("body").sendKeys(Keys.END);
     }
 
 

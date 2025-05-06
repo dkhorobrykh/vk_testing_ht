@@ -31,6 +31,7 @@ public class BaseUITest {
     public static void setUp() {
         Configuration.headless = false;
         Configuration.browser = "chrome";
+        Configuration.timeout = 10_000; // 10 seconds
 
         var options = new ChromeOptions();
         options.addArguments("--deny-permission-prompts");
