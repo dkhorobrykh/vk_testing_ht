@@ -14,11 +14,15 @@ import pages.BasePage;
  */
 public class GuestPage extends BasePage implements IGuestPage {
 
-    private static final By SOME_GUEST = By.xpath(".//div[contains(@data-l, 'targetUserId')]");
+    private static final By SOME_GUEST = By.xpath(".//*[contains(@data-l, 'targetUserId')]");
 
     @Override
     public List<GuestWrapper> getAllGuests() {
-        return $$(SOME_GUEST)
+        var guests = $$(SOME_GUEST).shouldHave(CollectionCondition
+            .sizeGreaterThan(0)
+            .because("Нет ни одного гостя в списке"));
+
+        return guests
             .stream()
             .map(GuestWrapper::new)
             .toList();

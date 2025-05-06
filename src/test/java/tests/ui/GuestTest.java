@@ -16,7 +16,7 @@ public class GuestTest extends BaseUITest {
     @Test
     @Tag(TestType.SLOW)
     @DisplayName("Перейти на страницу другого пользователя, проверить отображение в списке гостей")
-    public void guestShouldBeDisplayedInTheGuestList() {
+    public void guestShouldBeDisplayedInTheGuestList() throws Exception {
         log.info("Авторизуемся с пользователем #1");
         var profilePage1 = new LoginPage()
             .enterLogin(FIRST_USER.getLogin())
