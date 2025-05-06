@@ -1,5 +1,6 @@
 package pages.guests;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$$;
 
 import com.codeborne.selenide.CollectionCondition;
@@ -18,11 +19,7 @@ public class GuestPage extends BasePage implements IGuestPage {
 
     @Override
     public List<GuestWrapper> getAllGuests() {
-        var guests = $$(SOME_GUEST).shouldHave(CollectionCondition
-            .sizeGreaterThan(0)
-            .because("Нет ни одного гостя в списке"));
-
-        return guests
+        return $$(SOME_GUEST)
             .stream()
             .map(GuestWrapper::new)
             .toList();
@@ -30,8 +27,11 @@ public class GuestPage extends BasePage implements IGuestPage {
 
     @Override
     public void validateComponent(SelenideElement item) {
-        $$(SOME_GUEST).shouldHave(CollectionCondition
-            .sizeGreaterThan(0)
-            .because("Нет ни одного гостя в списке"));
+        $$(SOME_GUEST)
+            .shouldHave(CollectionCondition
+                .sizeGreaterThan(0)
+                .because("Нет ни одного гостя в списке"))
+            .first()
+            .shouldBe(visible.because("Гость не прогрузился"));
     }
 }
