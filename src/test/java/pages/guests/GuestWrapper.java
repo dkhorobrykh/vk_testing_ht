@@ -11,9 +11,8 @@ import utils.LoadableComponent;
  */
 public class GuestWrapper extends LoadableComponent {
 
-    private final SelenideElement item;
-
     private static final By GUEST_NAME = By.xpath(".//*[@class='n-t bold']");
+    private final SelenideElement item;
 
     /**
      * Конструктор для вызова метода с валидацией прогрузки страницы
@@ -42,6 +41,7 @@ public class GuestWrapper extends LoadableComponent {
     public String getName() {
         return item
             .$(GUEST_NAME)
+            .shouldBe(visible.because("Имя гостя отсутствует"))
             .getText();
     }
 }

@@ -41,8 +41,8 @@ public class ChatSection extends LoadableComponent {
 
         item
             .$(CREATE_CHAT_MENU_BUTTON)
-            .hover()
-            .shouldBe(visible.because("Кнопка открытия меню создания чата отсутствует"));
+            .shouldBe(visible.because("Кнопка открытия меню создания чата отсутствует"))
+            .hover();
 
         item
             .$$(SOME_CHAT)
@@ -62,6 +62,7 @@ public class ChatSection extends LoadableComponent {
         log.info("Открываем меню создания нового чата");
         item
             .$(CREATE_CHAT_MENU_BUTTON)
+            .shouldBe(visible.because("Кнопка меню создания нового чата отсутствует"))
             .hover()
             .click();
 

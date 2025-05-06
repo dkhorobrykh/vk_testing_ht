@@ -31,7 +31,9 @@ public class ProfilePage extends BasePage {
      * @return имя текущего пользователя
      */
     public String getUserName() {
-        return $(USER_NAME).getText();
+        return $(USER_NAME)
+            .shouldBe(visible.because("Имя текущего пользователя отсутствует"))
+            .getText();
     }
 
     /**

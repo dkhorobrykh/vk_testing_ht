@@ -69,10 +69,12 @@ public class MessageSection extends LoadableComponent {
     public void sendMessage(String message) {
         item
             .$(MESSAGE_INPUT_FIELD)
+            .shouldBe(visible.because("Поле ввода текста сообщения отсутствует"))
             .setValue(message);
 
         item
             .$(SEND_BUTTON)
+            .shouldBe(visible.because("Кнопка отправки сообщения отсутствует"))
             .click();
     }
 }
