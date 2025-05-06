@@ -5,6 +5,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.SelenideElement;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import pages.messages.MessagesPage;
@@ -16,12 +17,11 @@ import utils.LoadableComponent;
 @Slf4j
 public class ChatSection extends LoadableComponent {
 
-    private final SelenideElement item;
-
     private static final By CREATE_CHAT_MENU_BUTTON = By.xpath(".//*[contains(@data-l, 'createMenu')]");
     private static final By CREATE_CHAT_BUTTON = By.xpath(".//*[@data-tsid='plus_create_chat']");
     private static final By SOME_CHAT = By.xpath(".//msg-chats-list-item");
     private static final By NEW_CHAT_SECTION = By.xpath(".//msg-new-chat");
+    private final SelenideElement item;
 
     /**
      * Конструктор для вызова метода с валидацией прогрузки страницы
@@ -97,5 +97,43 @@ public class ChatSection extends LoadableComponent {
             .$$(SOME_CHAT)
             .get(index);
         return new ChatWrapper(chatElement);
+    }
+
+    public void removeLastChats(Integer quantity) {
+        log.info(
+            "Удаляем последние {} чатов",
+            quantity
+        );
+
+        item
+            .$$(SOME_CHAT)
+            .shouldHave(CollectionCondition
+                .sizeGreaterThanOrEqual(quantity)
+                .because("На данный момент чатов меньше, " + "чем требуется для удаления"));
+
+        var allChats = getAllChats();
+
+        for (var chat : allChats) {
+            removeChat(chat);
+        }
+    }
+
+    public List<ChatWrapper> getAllChats() {
+        return item
+            .$$(SOME_CHAT)
+            .stream()
+            .map(ChatWrapper::new)
+            .toList();
+    }
+
+    private void removeChat(ChatWrapper chat) {
+        log.info("Переходим в чат");
+        chat.clickOnChat();
+
+        new MessagesPage()
+            .getMessageSection()
+            .clickOnChatInfoButton()
+            .deleteChat();
+        log.info("Чат успешно удален");
     }
 }

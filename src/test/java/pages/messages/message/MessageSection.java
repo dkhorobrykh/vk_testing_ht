@@ -7,6 +7,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import pages.messages.MessagesPage;
+import pages.messages.chat.ChatInfoSection;
 import utils.LoadableComponent;
 
 /**
@@ -18,6 +19,7 @@ public class MessageSection extends LoadableComponent {
     private static final By SOME_MESSAGE = By.xpath(".//msg-message");
     private static final By MESSAGE_INPUT_FIELD = By.xpath(".//*[@data-tsid='write_msg_input-input']");
     private static final By SEND_BUTTON = By.xpath(".//*[@data-tsid='button_send']");
+    private static final By CHAT_INFO_BUTTON = By.xpath(".//*[@data-tsid='chat_info_button']");
     private final SelenideElement item;
 
     /**
@@ -76,5 +78,14 @@ public class MessageSection extends LoadableComponent {
             .$(SEND_BUTTON)
             .shouldBe(visible.because("Кнопка отправки сообщения отсутствует"))
             .click();
+    }
+
+    public ChatInfoSection clickOnChatInfoButton() {
+        item
+            .$(CHAT_INFO_BUTTON)
+            .shouldBe(visible.because("Кнопка информации о чате отсутствует"))
+            .click();
+
+        return new ChatInfoSection(item);
     }
 }

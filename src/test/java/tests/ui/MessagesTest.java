@@ -76,6 +76,18 @@ public class MessagesTest extends BaseUITest {
             assertThat(lastMessageText)
                 .as("Последнее сообщение в чате должно содержать отправленное")
                 .contains(MESSAGE_TO_SEND);
+
+            log.info("Тест прошел, пытаемся очистить тестовые данные");
+            try {
+                messagesPage
+                    .getChatSection()
+                    .removeLastChats(1);
+            } catch (Exception ex) {
+                log.error(
+                    "Очистить чаты не удалось: {}",
+                    ex.getMessage()
+                );
+            }
         }
 
         @ParameterizedTest
@@ -123,6 +135,18 @@ public class MessagesTest extends BaseUITest {
             assertThat(lastMessageTextAfterSend)
                 .as("Последнее сообщение в чате не должно содержать пустое сообщение")
                 .isEqualTo(lastMessageTextBeforeSend);
+
+            log.info("Тест прошел, пытаемся очистить тестовые данные");
+            try {
+                messagesPage
+                    .getChatSection()
+                    .removeLastChats(1);
+            } catch (Exception ex) {
+                log.error(
+                    "Очистить чаты не удалось: {}",
+                    ex.getMessage()
+                );
+            }
         }
     }
 
