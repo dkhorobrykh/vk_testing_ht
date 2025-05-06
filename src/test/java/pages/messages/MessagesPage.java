@@ -15,8 +15,6 @@ import pages.messages.message.MessageSection;
  */
 public class MessagesPage extends BasePage {
 
-    public static final String MESSAGES_URL = "https://ok.ru/messages";
-
     private static final By CHATS_SECTION = By.xpath(".//msg-chats-panel");
     private static final By MESSAGE_SECTION = By.xpath(".//msg-chat");
 

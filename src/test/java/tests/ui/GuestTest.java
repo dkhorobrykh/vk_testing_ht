@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.LoginPage;
 import tests.TestType;
+import utils.UrlRedirector;
 
 @Slf4j
 public class GuestTest extends BaseUITest {
@@ -23,7 +24,7 @@ public class GuestTest extends BaseUITest {
             .login();
 
         log.info("Переходим на профиль пользователя #2");
-        var profilePage2 = profilePage1.goToProfilePage(SECOND_USER.getId());
+        var profilePage2 = UrlRedirector.goToProfilePage(SECOND_USER.getId());
 
         log.info("Выходим из профиля пользователя #1");
         var loginPage = profilePage1.signOut();

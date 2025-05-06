@@ -12,8 +12,6 @@ import org.openqa.selenium.By;
  */
 public class LoginPage extends BasePage {
 
-    public static final String LOGIN_URL = "https://ok.ru/";
-
     private static final By LOGIN_INPUT = By.xpath(".//*[@id='field_email']");
     private static final By PASSWORD_INPUT = By.xpath(".//*[@id='field_password']");
     private static final By LOGIN_BUTTON = By.xpath(".//*[contains(@data-l, 'sign_in')]");

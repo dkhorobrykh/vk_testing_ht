@@ -14,8 +14,6 @@ import pages.BasePage;
  */
 public class GuestPage extends BasePage implements IGuestPage {
 
-    public static final String GUEST_LIST_URL = "https://ok.ru/guests";
-
     private static final By SOME_GUEST = By.xpath(".//*[contains(@data-l, 'targetUserId')]");
 
     @Override

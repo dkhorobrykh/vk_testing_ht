@@ -3,7 +3,6 @@ package pages;
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
 
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
@@ -17,8 +16,6 @@ import pages.news.NewsSection;
  * пользователе, перейти в другие разделы
  */
 public class ProfilePage extends BasePage {
-
-    public static final String PROFILE_URL = "https://ok.ru/";
 
     private static final By USER_NAME = By.xpath(".//*[contains(@data-l, 'userPage')]");
     private static final By GUEST_BUTTON = By.xpath(".//*[contains(@data-l, 'guests')]");
@@ -35,17 +32,6 @@ public class ProfilePage extends BasePage {
      */
     public String getUserName() {
         return $(USER_NAME).getText();
-    }
-
-    /**
-     * Перейти на страницу конкретного пользователя по его ID
-     *
-     * @param profileId ID профиля для перехода
-     * @return текущая страница профиля
-     */
-    public ProfilePage goToProfilePage(String profileId) {
-        open(PROFILE_URL + "profile/" + profileId);
-        return this;
     }
 
     /**
