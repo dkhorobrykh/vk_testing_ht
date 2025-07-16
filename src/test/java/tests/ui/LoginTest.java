@@ -1,42 +1,54 @@
 package tests.ui;
 
-import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.LoginPage;
+import tests.TestType;
+import utils.BotRegistry;
+import utils.UrlRedirector;
 
 public class LoginTest extends BaseUITest {
 
-    private static final LoginPage loginPage = new LoginPage();
-
-    private static final String secondUserLogin = System.getenv("SECOND_USER_LOGIN");
-    private static final String secondUserPassword = System.getenv("SECOND_USER_PASSWORD");
-    private static final String secondUserName = System.getenv("SECOND_USER_NAME");
-
-    private static final String wrongUserLogin = "wrong";
-    private static final String wrongUserPassword = "wrong";
-
     @Test
-    public void login_withValidCredentials_shouldRedirectToProfilePage() {
-        var profilePage = loginPage
-            .open()
-            .enterLogin(secondUserLogin)
-            .enterPassword(secondUserPassword)
+    @Tag(TestType.FAST)
+    @DisplayName("Залогиниться с корректными данными, должен перенаправить на основную страницу пользователя")
+    public void loginWithValidCredentialsShouldRedirectToProfilePage() {
+        var profilePage = new LoginPage()
+            .enterLogin(SECOND_USER.getLogin())
+            .enterPassword(SECOND_USER.getPassword())
             .login();
 
-        assertEquals(secondUserName, profilePage.getUserName());
+        assertAll(
+            () -> assertCurrentUrlEquals(UrlRedirector.BASE_URL),
+            () -> assertThat(profilePage.getUserName())
+                .as("Имя пользователя должно совпадать с именем заходящего пользователя")
+                .isEqualTo(SECOND_USER.getName())
+        );
+
     }
 
     @Test
-    public void login_withInvalidCredentials_shouldShowException() {
-        loginPage
-            .open()
-            .enterLogin(wrongUserLogin)
-            .enterPassword(wrongUserPassword)
-            .login();
+    @Tag(TestType.FAST)
+    @DisplayName("Залогиниться с неверными данными, должен вывести сообщение об ошибке")
+    public void loginWithInvalidCredentialsShouldShowException() {
+        var loginPage = new LoginPage();
 
-        assertEquals(LoginPage.WRONG_LOGIN_EXCEPTION_TEXT, loginPage.getWrongLoginExceptionText());
+        loginPage
+            .enterLogin(BotRegistry
+                .getBotWithInvalidCredentials()
+                .getLogin())
+            .enterPassword(BotRegistry
+                .getBotWithInvalidCredentials()
+                .getPassword())
+            .login(false);
+
+        var wrongLoginExceptionText = loginPage.getWrongLoginExceptionText();
+        assertThat(wrongLoginExceptionText)
+            .as("Текст ошибки при вводе некорректных данных для входа должен совпадать с ожидаемым")
+            .isEqualTo(LoginPage.WRONG_LOGIN_EXCEPTION_TEXT);
     }
 }

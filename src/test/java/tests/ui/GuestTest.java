@@ -1,59 +1,55 @@
 package tests.ui;
 
-import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.AfterEach;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import pages.GuestPage;
 import pages.LoginPage;
-import pages.ProfilePage;
+import tests.TestType;
+import utils.UrlRedirector;
 
+@Slf4j
 public class GuestTest extends BaseUITest {
 
-    private LoginPage loginPage = new LoginPage();
-    private GuestPage guestPage = new GuestPage();
-    private ProfilePage profilePage = new ProfilePage();
-
-    private final static String firstUserLogin = System.getenv("FIRST_USER_LOGIN");
-    private final static String firstUserPassword = System.getenv("FIRST_USER_PASSWORD");
-    private final static String secondUserId = System.getenv("SECOND_USER_ID");
-    private final static String secondUserLogin = System.getenv("SECOND_USER_LOGIN");
-    private final static String secondUserPassword = System.getenv("SECOND_USER_PASSWORD");
-
-    @AfterEach
-    public void tearDown() {
-        closeWebDriver();
-    }
-
     @Test
-    public void guest_shouldBeDisplayedInTheGuestList() {
-        // authorize with the first user
-        loginPage
-            .open()
-            .enterLogin(firstUserLogin)
-            .enterPassword(firstUserPassword)
+    @Tag(TestType.SLOW)
+    @DisplayName("Перейти на страницу другого пользователя, проверить отображение в списке гостей")
+    public void guestShouldBeDisplayedInTheGuestList() throws Exception {
+        log.info("Авторизуемся с пользователем #1");
+        var profilePage1 = new LoginPage()
+            .enterLogin(FIRST_USER.getLogin())
+            .enterPassword(FIRST_USER.getPassword())
             .login();
 
-        // go to the second user's profile
-        profilePage = profilePage
-            .goToProfilePage(secondUserId);
+        log.info("Переходим на профиль пользователя #2");
+        var profilePage2 = UrlRedirector.goToProfilePage(SECOND_USER.getId());
 
-        // sign out from the first user
-        loginPage = profilePage.signOut();
+        log.info("Выходим из профиля пользователя #1");
+        var loginPage = profilePage1.signOut();
 
-        // authorize with the second user
-        profilePage = loginPage
-            .enterLogin(secondUserLogin)
-            .enterPassword(secondUserPassword)
+        log.info("Авторизуемся с пользователем #2");
+        profilePage2 = loginPage
+            .enterLogin(SECOND_USER.getLogin())
+            .enterPassword(SECOND_USER.getPassword())
             .login();
 
-        // go to the guest page
-        guestPage = profilePage
-            .goToGuestPage();
+        log.info("Переходим на страницу гостей пользователя #2");
+        var guestPage = profilePage2.goToGuestPage();
 
-        // check that the first user is in the guest list
-        assertEquals("Иванов Иван", guestPage.getFirstGuestName());
+        log.info("Проверяем, появился ли пользователь #1 в списке гостей пользователя #2");
+        var guests = guestPage.getAllGuests();
+        assertThat(guests)
+            .as("Список гостей пуст")
+            .isNotEmpty();
+
+        var firstGuestName = guests
+            .getFirst()
+            .getName();
+        assertThat(firstGuestName)
+            .as("Имя первого гостя должно совпадать с именем пользователя #1")
+            .isEqualTo(FIRST_USER.getName());
     }
 
 }

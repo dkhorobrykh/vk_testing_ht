@@ -1,21 +1,75 @@
 package tests.ui;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.WebDriverRunner;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Timeout;
 import org.openqa.selenium.chrome.ChromeOptions;
+import utils.BotRegistry;
+import utils.TestBot;
+import utils.UrlRedirector;
 
+/**
+ * Базовый класс UI тестов
+ */
+@Timeout(value = 60, unit = TimeUnit.SECONDS)
 public class BaseUITest {
 
-    // for github actions
+    protected static final TestBot FIRST_USER = BotRegistry.getFirstBot();
+    protected static final TestBot SECOND_USER = BotRegistry.getSecondBot();
+
+    /**
+     * Установка конфигурации
+     */
     @BeforeAll
     public static void setUp() {
-        Configuration.headless = true;
+        Configuration.headless = false;
         Configuration.browser = "chrome";
+        Configuration.timeout = 10_000; // 10 seconds
+
+        var options = new ChromeOptions();
+        options.addArguments("--deny-permission-prompts");
+        Configuration.browserCapabilities = options;
     }
 
+    /**
+     * Открытие начальной страницы перед каждым тестом
+     */
+    @BeforeEach
+    public void setUpTest() {
+        UrlRedirector.goToBasePage();
+    }
+
+    /**
+     * Получение текущего URL страницы
+     */
+    public String getCurrentUrl() {
+        return WebDriverRunner
+            .getWebDriver()
+            .getCurrentUrl();
+    }
+
+    /**
+     * Проверяет, что текущий URL страницы совпадает с ожидаемым
+     *
+     * @param expectedUrl ожидаемый URL
+     */
+    public void assertCurrentUrlEquals(String expectedUrl) {
+        var currentUrl = getCurrentUrl();
+        assertThat(currentUrl)
+            .as("URL текущей страницы должен совпадать с ожидаемым")
+            .isEqualTo(expectedUrl);
+    }
+
+    /**
+     * Закрытие драйвера после каждого теста
+     */
     @AfterEach
     public void tearDown() {
         closeWebDriver();

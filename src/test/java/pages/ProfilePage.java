@@ -1,57 +1,109 @@
 package pages;
 
+import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.page;
 
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
+import pages.guests.GuestPageFactory;
+import pages.guests.IGuestPage;
+import pages.messages.MessagesPage;
+import pages.news.NewsSection;
 
-public class ProfilePage {
+/**
+ * Страница профиля пользователя (<a href="https://ok.ru/profile/">перейти</a>) Позволяет получить основную информацию о
+ * пользователе, перейти в другие разделы
+ */
+public class ProfilePage extends BasePage {
 
-    private final static String PROFILE_URL = "https://ok.ru/profile/";
+    private static final By USER_NAME = By.xpath(".//*[contains(@data-l, 'userPage')]");
+    private static final By GUEST_BUTTON = By.xpath(".//*[contains(@data-l, 'guests')]");
+    private static final By MESSAGES_BUTTON = By.xpath(".//*[@id='msg_toolbar_button']");
+    private static final By RIGHT_MENU_BUTTON = By.xpath(".//button[contains(@class, 'ucard-mini')]");
+    private static final By EXIT_BUTTON = By.xpath(".//*[contains(@data-l, 'logout')]");
+    private static final By FINAL_EXIT_BUTTON = By.xpath(".//input[contains(@data-l, 'logout')]");
+    private static final By NEWS_SECTION = By.xpath(".//*[contains(@class, 'feed-list')]");
 
-    private SelenideElement userName = $(By.xpath("//*[@id=\"hook_Block_Navigation\"]/div/div/div[1]/a/div"));
-    private SelenideElement profileButton = $(By.xpath("//*[@id=\"hook_Block_ToolbarUserDropdown\"]/div/button"));
-    private SelenideElement signOutButton = $(By.xpath("//*[@id=\"user-dropdown-menu\"]/div[1]/div/div[1]/div[2]"));
-    private SelenideElement finalSignOutButton = $(By.xpath("//input[@value='Выйти']"));
-    private SelenideElement guestButton = $(By.xpath("//*[@id=\"hook_Block_HeaderTopNewEventsInToolbar\"]/a"));
-    private SelenideElement messagesButton = $(By.xpath("//*[@id=\"msg_toolbar_button\"]"));
-
+    /**
+     * Вернуть имя текущего пользователя
+     *
+     * @return имя текущего пользователя
+     */
     public String getUserName() {
-        return userName.getText();
+        return $(USER_NAME)
+            .shouldBe(visible.because("Имя текущего пользователя отсутствует"))
+            .getText();
     }
 
-    public ProfilePage goToProfilePage(String profileId) {
-        open(PROFILE_URL + profileId);
-        return this;
-    }
-
+    /**
+     * Выйти из аккаунта
+     *
+     * @return страница логина
+     */
     public LoginPage signOut() {
-//        profileButton.click();
-//        signOutButton.shouldBe(visible);
-//        signOutButton.click();
-//        finalSignOutButton.shouldBe(visible);
-//        finalSignOutButton.click();
-
-        // почему-то не срабатывает последний клик по кнопке, придется оставить небольшой костыль
-        closeWebDriver();
-        new LoginPage().open();
-        return page(LoginPage.class);
+        $(RIGHT_MENU_BUTTON)
+            .shouldBe(visible.because("Правое верхнее меню отсутствует"))
+            .hover()
+            .click();
+        $(EXIT_BUTTON)
+            .shouldBe(visible.because("Кнопка выхода отсутствует"))
+            .click();
+        $(FINAL_EXIT_BUTTON)
+            .shouldBe(visible.because("Финальная кнопка выхода отсутствует"))
+            .click();
+        SelenideElement form = $(FINAL_EXIT_BUTTON)
+            .closest("form")
+            .should(appear.because("Форма диалога выхода не найдена"));
+        form.submit();
+        return new LoginPage();
     }
 
-    public GuestPage goToGuestPage() {
-        guestButton.shouldBe(visible);
-        guestButton.click();
-        return page(GuestPage.class);
+    /**
+     * Перейти на страницу со списком гостей
+     *
+     * @return страница со списком гостей
+     */
+    public IGuestPage goToGuestPage() {
+        $(GUEST_BUTTON)
+            .shouldBe(visible.because("Кнопка списка гостей отсутствует"))
+            .click();
+        return GuestPageFactory.get($("body"));
     }
 
+    /**
+     * Перейти на страницу сообщений
+     *
+     * @return страница сообщений
+     */
     public MessagesPage goToMessagesPage() {
-        messagesButton.shouldBe(visible);
-        messagesButton.click();
-        return page(MessagesPage.class);
+        $(MESSAGES_BUTTON)
+            .shouldBe(visible.because("Кнопка сообщений отсутствует"))
+            .click();
+        return new MessagesPage();
     }
 
+    public NewsSection getNewsSection() {
+        return new NewsSection($(NEWS_SECTION).shouldBe(visible.because("Секция новостей не прогрузилась")));
+    }
+
+    @Override
+    public void validateComponent(SelenideElement item) {
+
+        item
+            .$(USER_NAME)
+            .shouldBe(visible.because("Имя пользователя не найдено"));
+
+        item
+            .$(GUEST_BUTTON)
+            .shouldBe(visible.because("Кнопка списка гостей отсутствует"));
+
+        item
+            .$(MESSAGES_BUTTON)
+            .shouldBe(visible.because("Кнопка сообщений отсутствует"));
+
+        item
+            .$(RIGHT_MENU_BUTTON)
+            .shouldBe(visible.because("Правое верхнее меню отсутствует"));
+    }
 }
