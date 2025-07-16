@@ -5,13 +5,13 @@ import java.util.Map;
 
 public class BotRegistry {
 
-    private final static String FIRST_USER_LOGIN = "79617542986";
-    private final static String FIRST_USER_PASSWORD = "botForAutotests123!";
+    private final static String FIRST_USER_LOGIN = "PHONE_NUMBER";
+    private final static String FIRST_USER_PASSWORD = "PASSWORD";
     private final static String FIRST_USER_NAME = "Иван Иванов";
     private final static String FIRST_USER_ID = "910117848542";
 
-    private final static String SECOND_USER_LOGIN = "79223513163";
-    private final static String SECOND_USER_PASSWORD = "botForAutotests123!";
+    private final static String SECOND_USER_LOGIN = "PHONE_NUMBER";
+    private final static String SECOND_USER_PASSWORD = "PASSWORD";
     private final static String SECOND_USER_NAME = "Иван2 Иванов2";
     private final static String SECOND_USER_ID = "910109040312";
 
