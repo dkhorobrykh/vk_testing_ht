@@ -12,12 +12,10 @@ import org.openqa.selenium.By;
  */
 public class LoginPage extends BasePage {
 
-    public static final String LOGIN_URL = "https://ok.ru/";
-
-    private static final By loginInput = By.xpath(".//*[@id='field_email']");
-    private static final By passwordInput = By.xpath(".//*[@id='field_password']");
-    private static final By loginButton = By.xpath(".//*[contains(@data-l, 'sign_in')]");
-    private static final By wrongLoginException = By.xpath(".//*[contains(@class, 'login_error')]");
+    private static final By LOGIN_INPUT = By.xpath(".//*[@id='field_email']");
+    private static final By PASSWORD_INPUT = By.xpath(".//*[@id='field_password']");
+    private static final By LOGIN_BUTTON = By.xpath(".//*[contains(@data-l, 'sign_in')]");
+    private static final By WRONG_LOGIN_EXCEPTION = By.xpath(".//*[contains(@class, 'login_error')]");
 
     public static final String WRONG_LOGIN_EXCEPTION_TEXT = "Неправильно указан логин и/или пароль";
 
@@ -29,7 +27,7 @@ public class LoginPage extends BasePage {
      * @return текущая страница с логином
      */
     public LoginPage enterLogin(String login) {
-        $(loginInput)
+        $(LOGIN_INPUT)
             .shouldBe(visible.because("Поле ввода логина отсутствует"))
             .setValue(login);
         return this;
@@ -43,7 +41,7 @@ public class LoginPage extends BasePage {
      * @return текущая страница с логином
      */
     public LoginPage enterPassword(String password) {
-        $(passwordInput)
+        $(PASSWORD_INPUT)
             .shouldBe(visible.because("Поле ввода пароля отсутствует"))
             .setValue(password);
         return this;
@@ -54,8 +52,9 @@ public class LoginPage extends BasePage {
      *
      * @return страница профиля
      */
+    // Тут была попытка в параметрический полиморфизм)
     public BasePage login(boolean needRedirect) {
-        $(loginButton)
+        $(LOGIN_BUTTON)
             .shouldBe(visible.because("Кнопка входа отсутствует"))
             .click();
         return needRedirect ? new ProfilePage() : this;
@@ -76,7 +75,7 @@ public class LoginPage extends BasePage {
      * @return текст ошибки
      */
     public String getWrongLoginExceptionText() {
-        return $(wrongLoginException)
+        return $(WRONG_LOGIN_EXCEPTION)
             .shouldBe(visible.because("Ошибка неправильных данных для входа отсутствует"))
             .getText();
     }
@@ -84,15 +83,15 @@ public class LoginPage extends BasePage {
     @Override
     public void validateComponent(SelenideElement item) {
         item
-            .$(loginInput)
+            .$(LOGIN_INPUT)
             .shouldBe(visible.because("Поле ввода логина отсутствует"));
 
         item
-            .$(passwordInput)
+            .$(PASSWORD_INPUT)
             .shouldBe(visible.because("Поле ввода пароля отсутствует"));
 
         item
-            .$(loginButton)
+            .$(LOGIN_BUTTON)
             .shouldBe(visible.because("Кнопка входа отсутствует"));
     }
 }

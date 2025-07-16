@@ -5,6 +5,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.SelenideElement;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import pages.messages.MessagesPage;
@@ -16,12 +17,12 @@ import utils.LoadableComponent;
 @Slf4j
 public class ChatSection extends LoadableComponent {
 
+    private static final By CREATE_CHAT_MENU_BUTTON = By.xpath(".//*[contains(@data-l, 'createMenu')]");
+    private static final By CREATE_CHAT_BUTTON = By.xpath(".//*[@data-tsid='plus_create_chat']");
+    private static final By SOME_CHAT = By.xpath(".//msg-chats-list-item");
+    private static final By NEW_CHAT_SECTION = By.xpath(".//msg-new-chat");
+    private static final By CONTROL_PANEL = By.xpath(".//*[@data-tsid='conversation_list_top_panel']");
     private final SelenideElement item;
-
-    private static final By createChatMenuButton = By.xpath(".//*[contains(@data-l, 'createMenu')]");
-    private static final By createChatButton = By.xpath(".//*[@data-tsid='plus_create_chat']");
-    private static final By someChat = By.xpath(".//msg-chats-list-item");
-    private static final By newChatSection = By.xpath(".//msg-new-chat");
 
     /**
      * Конструктор для вызова метода с валидацией прогрузки страницы
@@ -40,12 +41,12 @@ public class ChatSection extends LoadableComponent {
         item.shouldBe(visible.because("Блок с чатами не отображается"));
 
         item
-            .$(createChatMenuButton)
-            .hover()
-            .shouldBe(visible.because("Кнопка открытия меню создания чата отсутствует"));
+            .$(CREATE_CHAT_MENU_BUTTON)
+            .shouldBe(visible.because("Кнопка открытия меню создания чата отсутствует"))
+            .hover();
 
         item
-            .$$(someChat)
+            .$$(SOME_CHAT)
             .shouldHave(CollectionCondition
                 .sizeGreaterThan(0)
                 .because("Нет ни одного чата в списке"));
@@ -61,20 +62,21 @@ public class ChatSection extends LoadableComponent {
 
         log.info("Открываем меню создания нового чата");
         item
-            .$(createChatMenuButton)
+            .$(CREATE_CHAT_MENU_BUTTON)
+            .shouldBe(visible.because("Кнопка меню создания нового чата отсутствует"))
             .hover()
             .click();
 
         log.info("Создаем новый чат");
         item
-            .$(createChatButton)
+            .$(CREATE_CHAT_BUTTON)
             .shouldBe(visible.because("Кнопка создания нового чата отсутствует"))
             .click();
 
         log.info("Завершаем создание нового чата");
 
         var newChatSectionElement =
-            new NewChatSection($(newChatSection).shouldBe(visible.because("Секция создания нового чата отсутствует")));
+            new NewChatSection($(NEW_CHAT_SECTION).shouldBe(visible.because("Секция создания нового чата отсутствует")));
         newChatSectionElement.clickOnCreateNewChatButton();
 
         log.info("Чат успешно создан");
@@ -93,8 +95,55 @@ public class ChatSection extends LoadableComponent {
         );
 
         var chatElement = item
-            .$$(someChat)
+            .$$(SOME_CHAT)
             .get(index);
         return new ChatWrapper(chatElement);
+    }
+
+    public void removeLastChats(Integer quantity) {
+        log.info(
+            "Удаляем последние {} чатов",
+            quantity
+        );
+
+        item
+            .$$(SOME_CHAT)
+            .shouldHave(CollectionCondition
+                .sizeGreaterThanOrEqual(quantity)
+                .because("На данный момент чатов меньше, " + "чем требуется для удаления"));
+
+        var allChats = getAllChats();
+
+        int deleted = 0;
+        for (var chat : allChats) {
+            if (deleted >= quantity) {
+                break;
+            }
+            item
+                .$(CONTROL_PANEL)
+                .shouldBe(visible.because("Верхняя панель секции чатов отсутствует"))
+                .hover();
+            removeChat(chat);
+            deleted++;
+        }
+    }
+
+    public List<ChatWrapper> getAllChats() {
+        return item
+            .$$(SOME_CHAT)
+            .stream()
+            .map(ChatWrapper::new)
+            .toList();
+    }
+
+    private void removeChat(ChatWrapper chat) {
+        log.info("Переходим в чат");
+        chat.clickOnChat();
+
+        new MessagesPage()
+            .getMessageSection()
+            .clickOnChatInfoButton()
+            .deleteChat();
+        log.info("Чат успешно удален");
     }
 }

@@ -8,8 +8,6 @@ import org.openqa.selenium.By;
 import pages.BasePage;
 import pages.messages.chat.ChatSection;
 import pages.messages.message.MessageSection;
-import pages.messages.message.MessageWrapper;
-import utils.LoadableComponent;
 
 /**
  * Страница сообщений (<a href="https://ok.ru/messages">перейти</a>) Позволяет получать и отправлять сообщения текущего
@@ -17,10 +15,8 @@ import utils.LoadableComponent;
  */
 public class MessagesPage extends BasePage {
 
-    public static final String MESSAGES_URL = "https://ok.ru/messages";
-
-    private static final By chatsSection = By.xpath(".//msg-chats-panel");
-    private static final By messageSection = By.xpath(".//msg-chat");
+    private static final By CHATS_SECTION = By.xpath(".//msg-chats-panel");
+    private static final By MESSAGE_SECTION = By.xpath(".//msg-chat");
 
     /**
      * Открыть сообщения в чате
@@ -38,35 +34,8 @@ public class MessagesPage extends BasePage {
      *
      * @return секция с чатами
      */
-    private ChatSection getChatSection() {
-        return new ChatSection($(chatsSection).shouldBe(visible.because("Секция с чатами отсутствует")));
-    }
-
-    /**
-     * Отправить сообщение в открытый чат
-     *
-     * @param message текст сообщения для отправки
-     */
-    public void sendMessage(String message) {
-        getMessageSection().sendMessage(message);
-    }
-
-    /**
-     * Получить последнее сообщение в открытом чате
-     *
-     * @return последнее сообщение в открытом чате
-     */
-    public MessageWrapper getLastMessage() {
-        return getMessageSection().getLastMessage();
-    }
-
-    /**
-     * Создать новый пустой чат
-     */
-    public void createEmptyChat() {
-        var chatSection = getChatSection();
-
-        chatSection.createNewEmptyChat();
+    public ChatSection getChatSection() {
+        return new ChatSection($(CHATS_SECTION).shouldBe(visible.because("Секция с чатами отсутствует")));
     }
 
     /**
@@ -74,14 +43,14 @@ public class MessagesPage extends BasePage {
      *
      * @return секция с сообщениями
      */
-    private MessageSection getMessageSection() {
-        return new MessageSection($(messageSection).shouldBe(visible.because("Секция с сообщениями отсутствует")));
+    public MessageSection getMessageSection() {
+        return new MessageSection($(MESSAGE_SECTION).shouldBe(visible.because("Секция с сообщениями отсутствует")));
     }
 
     @Override
     public void validateComponent(SelenideElement item) {
         item
-            .$(chatsSection)
+            .$(CHATS_SECTION)
             .shouldBe(visible.because("Секция с чатами отсутствует"));
     }
 }

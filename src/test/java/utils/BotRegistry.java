@@ -15,7 +15,7 @@ public class BotRegistry {
     private final static String SECOND_USER_NAME = "Иван2 Иванов2";
     private final static String SECOND_USER_ID = "910109040312";
 
-    private static final Map<String, TestBot> registry = new LinkedHashMap<>();
+    private static final Map<String, TestBot> REGISTRY = new LinkedHashMap<>();
 
     static {
         registerBot(new TestBot(FIRST_USER_ID, FIRST_USER_LOGIN, FIRST_USER_PASSWORD, FIRST_USER_NAME));
@@ -24,25 +24,28 @@ public class BotRegistry {
     }
 
     public static void registerBot(TestBot bot) {
-        if (registry.containsKey(bot.getLogin())) {
+        if (REGISTRY.containsKey(bot.getLogin())) {
             throw new IllegalArgumentException("Bot with login " + bot.getLogin() + " is already registered.");
         }
-        registry.put(bot.getLogin(), bot);
+        REGISTRY.put(
+            bot.getLogin(),
+            bot
+        );
     }
 
     public static TestBot getBotByLogin(String login) {
-        return registry.get(login);
+        return REGISTRY.get(login);
     }
 
     public static TestBot getFirstBot() {
-        return registry.get(FIRST_USER_LOGIN);
+        return REGISTRY.get(FIRST_USER_LOGIN);
     }
 
     public static TestBot getSecondBot() {
-        return registry.get(SECOND_USER_LOGIN);
+        return REGISTRY.get(SECOND_USER_LOGIN);
     }
 
     public static TestBot getBotWithInvalidCredentials() {
-        return registry.get("wrong");
+        return REGISTRY.get("wrong");
     }
 }

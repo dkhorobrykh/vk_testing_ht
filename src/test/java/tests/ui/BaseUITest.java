@@ -1,7 +1,6 @@
 package tests.ui;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static com.codeborne.selenide.Selenide.open;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.codeborne.selenide.Configuration;
@@ -14,6 +13,7 @@ import org.junit.jupiter.api.Timeout;
 import org.openqa.selenium.chrome.ChromeOptions;
 import utils.BotRegistry;
 import utils.TestBot;
+import utils.UrlRedirector;
 
 /**
  * Базовый класс UI тестов
@@ -21,10 +21,8 @@ import utils.TestBot;
 @Timeout(value = 60, unit = TimeUnit.SECONDS)
 public class BaseUITest {
 
-    protected final static String BASE_URL = "https://ok.ru/";
-
-    protected static TestBot firstUser = BotRegistry.getFirstBot();
-    protected static TestBot secondUser = BotRegistry.getSecondBot();
+    protected static final TestBot FIRST_USER = BotRegistry.getFirstBot();
+    protected static final TestBot SECOND_USER = BotRegistry.getSecondBot();
 
     /**
      * Установка конфигурации
@@ -33,6 +31,7 @@ public class BaseUITest {
     public static void setUp() {
         Configuration.headless = false;
         Configuration.browser = "chrome";
+        Configuration.timeout = 10_000; // 10 seconds
 
         var options = new ChromeOptions();
         options.addArguments("--deny-permission-prompts");
@@ -44,7 +43,7 @@ public class BaseUITest {
      */
     @BeforeEach
     public void setUpTest() {
-        open(BASE_URL);
+        UrlRedirector.goToBasePage();
     }
 
     /**

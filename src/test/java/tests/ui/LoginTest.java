@@ -7,9 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.LoginPage;
-import pages.ProfilePage;
 import tests.TestType;
 import utils.BotRegistry;
+import utils.UrlRedirector;
 
 public class LoginTest extends BaseUITest {
 
@@ -18,15 +18,15 @@ public class LoginTest extends BaseUITest {
     @DisplayName("Залогиниться с корректными данными, должен перенаправить на основную страницу пользователя")
     public void loginWithValidCredentialsShouldRedirectToProfilePage() {
         var profilePage = new LoginPage()
-            .enterLogin(secondUser.getLogin())
-            .enterPassword(secondUser.getPassword())
+            .enterLogin(SECOND_USER.getLogin())
+            .enterPassword(SECOND_USER.getPassword())
             .login();
 
         assertAll(
-            () -> assertCurrentUrlEquals(ProfilePage.PROFILE_URL),
+            () -> assertCurrentUrlEquals(UrlRedirector.BASE_URL),
             () -> assertThat(profilePage.getUserName())
                 .as("Имя пользователя должно совпадать с именем заходящего пользователя")
-                .isEqualTo(secondUser.getName())
+                .isEqualTo(SECOND_USER.getName())
         );
 
     }

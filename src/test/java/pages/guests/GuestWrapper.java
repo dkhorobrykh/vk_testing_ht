@@ -11,9 +11,8 @@ import utils.LoadableComponent;
  */
 public class GuestWrapper extends LoadableComponent {
 
+    private static final By GUEST_NAME = By.xpath(".//*[@class='n-t bold']");
     private final SelenideElement item;
-
-    private static final By guestName = By.xpath(".//*[@class='n-t bold']");
 
     /**
      * Конструктор для вызова метода с валидацией прогрузки страницы
@@ -30,7 +29,7 @@ public class GuestWrapper extends LoadableComponent {
         item.shouldBe(visible.because("Гость не прогрузился"));
 
         item
-            .$(guestName)
+            .$(GUEST_NAME)
             .shouldBe(visible.because("Имя гостя отсутствует на странице"));
     }
 
@@ -41,7 +40,8 @@ public class GuestWrapper extends LoadableComponent {
      */
     public String getName() {
         return item
-            .$(guestName)
+            .$(GUEST_NAME)
+            .shouldBe(visible.because("Имя гостя отсутствует"))
             .getText();
     }
 }

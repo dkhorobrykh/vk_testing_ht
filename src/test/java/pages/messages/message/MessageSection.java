@@ -3,9 +3,11 @@ package pages.messages.message;
 import static com.codeborne.selenide.Condition.visible;
 
 import com.codeborne.selenide.SelenideElement;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import pages.messages.MessagesPage;
+import pages.messages.chat.ChatInfoSection;
 import utils.LoadableComponent;
 
 /**
@@ -14,11 +16,11 @@ import utils.LoadableComponent;
 @Slf4j
 public class MessageSection extends LoadableComponent {
 
+    private static final By SOME_MESSAGE = By.xpath(".//msg-message");
+    private static final By MESSAGE_INPUT_FIELD = By.xpath(".//*[@data-tsid='write_msg_input-input']");
+    private static final By SEND_BUTTON = By.xpath(".//*[@data-tsid='button_send']");
+    private static final By CHAT_INFO_BUTTON = By.xpath(".//*[@data-tsid='chat_info_button']");
     private final SelenideElement item;
-
-    private static final By someMessage = By.xpath(".//msg-message");
-    private static final By messageInputField = By.xpath(".//*[@data-tsid='write_msg_input-input']");
-    private static final By sendButton = By.xpath(".//*[@data-tsid='button_send']");
 
     /**
      * Конструктор для вызова метода с валидацией прогрузки страницы
@@ -37,27 +39,28 @@ public class MessageSection extends LoadableComponent {
         item.shouldBe(visible.because("Список сообщений не прогрузился"));
 
         item
-            .$(messageInputField)
+            .$(MESSAGE_INPUT_FIELD)
             .shouldBe(visible.because("Поле ввода сообщения не найдено"));
 
         item
-            .$(sendButton)
+            .$(SEND_BUTTON)
             .shouldBe(visible.because("Кнопка отправки сообщения не найдена"));
 
         log.info("Блок с сообщениями успешно провалидирован");
     }
 
     /**
-     * Получить последнее сообщение в чате
+     * Получить список сообщений в чате
      *
-     * @return обертка последнего сообщения
+     * @return список оберток сообщений
      */
 
-    public MessageWrapper getLastMessage() {
-        return new MessageWrapper(item
-            .$$(someMessage)
-            .last()
-            .shouldBe(visible.because("Последнее сообщение отсутствует")));
+    public List<MessageWrapper> getAllMessagesInChat() {
+        return item
+            .$$(SOME_MESSAGE)
+            .stream()
+            .map(MessageWrapper::new)
+            .toList();
     }
 
     /**
@@ -67,11 +70,22 @@ public class MessageSection extends LoadableComponent {
      */
     public void sendMessage(String message) {
         item
-            .$(messageInputField)
+            .$(MESSAGE_INPUT_FIELD)
+            .shouldBe(visible.because("Поле ввода текста сообщения отсутствует"))
             .setValue(message);
 
         item
-            .$(sendButton)
+            .$(SEND_BUTTON)
+            .shouldBe(visible.because("Кнопка отправки сообщения отсутствует"))
             .click();
+    }
+
+    public ChatInfoSection clickOnChatInfoButton() {
+        item
+            .$(CHAT_INFO_BUTTON)
+            .shouldBe(visible.because("Кнопка информации о чате отсутствует"))
+            .click();
+
+        return new ChatInfoSection(item);
     }
 }

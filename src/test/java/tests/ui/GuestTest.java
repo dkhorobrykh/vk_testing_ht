@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.LoginPage;
 import tests.TestType;
+import utils.UrlRedirector;
 
 @Slf4j
 public class GuestTest extends BaseUITest {
@@ -15,35 +16,40 @@ public class GuestTest extends BaseUITest {
     @Test
     @Tag(TestType.SLOW)
     @DisplayName("Перейти на страницу другого пользователя, проверить отображение в списке гостей")
-    public void guestShouldBeDisplayedInTheGuestList() {
+    public void guestShouldBeDisplayedInTheGuestList() throws Exception {
         log.info("Авторизуемся с пользователем #1");
         var profilePage1 = new LoginPage()
-            .enterLogin(firstUser.getLogin())
-            .enterPassword(firstUser.getPassword())
+            .enterLogin(FIRST_USER.getLogin())
+            .enterPassword(FIRST_USER.getPassword())
             .login();
 
         log.info("Переходим на профиль пользователя #2");
-        var profilePage2 = profilePage1
-            .goToProfilePage(secondUser.getId());
+        var profilePage2 = UrlRedirector.goToProfilePage(SECOND_USER.getId());
 
         log.info("Выходим из профиля пользователя #1");
         var loginPage = profilePage1.signOut();
 
         log.info("Авторизуемся с пользователем #2");
         profilePage2 = loginPage
-            .enterLogin(secondUser.getLogin())
-            .enterPassword(secondUser.getPassword())
+            .enterLogin(SECOND_USER.getLogin())
+            .enterPassword(SECOND_USER.getPassword())
             .login();
 
         log.info("Переходим на страницу гостей пользователя #2");
-        var guestPage = profilePage2
-            .goToGuestPage();
+        var guestPage = profilePage2.goToGuestPage();
 
         log.info("Проверяем, появился ли пользователь #1 в списке гостей пользователя #2");
-        var firstGuestName = guestPage.getFirstGuestName();
+        var guests = guestPage.getAllGuests();
+        assertThat(guests)
+            .as("Список гостей пуст")
+            .isNotEmpty();
+
+        var firstGuestName = guests
+            .getFirst()
+            .getName();
         assertThat(firstGuestName)
             .as("Имя первого гостя должно совпадать с именем пользователя #1")
-            .isEqualTo(firstUser.getName());
+            .isEqualTo(FIRST_USER.getName());
     }
 
 }
