@@ -11,6 +11,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      LANG: ru_RU.UTF-8
+      LANGUAGE: ru
+      LC_ALL: ru_RU.UTF-8
 
     steps:
       - name: Checkout repository
@@ -23,5 +27,33 @@ jobs:
           java-version: '23'
           cache: maven
 
+      - name: Start Xvfb (виртуальный дисплей)
+        run: Xvfb :99 &
+
+      - name: Set DISPLAY
+        run: echo "DISPLAY=:99" >> $GITHUB_ENV
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
       - name: Run tests with Maven
         run: mvn test
+        env:
+          FIRST_USER_LOGIN: ${{ secrets.FIRST_USER_LOGIN }}
+          FIRST_USER_PASSWORD: ${{ secrets.FIRST_USER_PASSWORD }}
+          FIRST_USER_NAME: ${{ secrets.FIRST_USER_NAME }}
+          SECOND_USER_LOGIN: ${{ secrets.SECOND_USER_LOGIN }}
+          SECOND_USER_PASSWORD: ${{ secrets.SECOND_USER_PASSWORD }}
+          SECOND_USER_ID: ${{ secrets.SECOND_USER_ID }}
+          SECOND_USER_NAME: ${{ secrets.SECOND_USER_NAME }}
+
+      - name: Upload test artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenide-screenshots
+          path: build/reports/tests/
