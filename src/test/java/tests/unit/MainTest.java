@@ -1,6 +1,6 @@
 package tests.unit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +8,9 @@ public class MainTest {
 
     @Test
     public void testMain() {
-        assertTrue(true, "true != true... (☉_☉)");
+        assertThat(true)
+            .as("true is false... (☉_☉)")
+            .isTrue();
     }
 
 }
